@@ -1,13 +1,20 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+//To read environment variables from a local .env file, for the way we are deploying we'll have to set this
+//where we are deploying along with all the other env variables.
+if (process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
+
+// Create a pool for PostgreSQL connections.
 const pool = new Pool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
     database: process.env.DB_NAME,
-    ssl: { rejectUnauthorized: false }, // Required for Render or other cloud DB hosts with SSL
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 // Connect to the database (optional: can call once at startup)
