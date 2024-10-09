@@ -1,12 +1,23 @@
-const express = require("express");
+const express = require('express');
+const { connectDB, queryDB } = require('./database');
+require('dotenv').config();
+
 const app = express();
+const port = process.env.PORT || 3000;
 
-const port = process.env.PORT || 3000; // Use port 3000 or the environment PORT variable provided by Replit
+// Test the database connection on app startup
+connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Server is running!");
+// Simple route to test the connection
+app.get('/test-db', async (req, res) => {
+  try {
+    await connectDB();
+    res.send('Database connection successful');
+  } catch (error) {
+    res.status(500).send('Database connection failed');
+  }
 });
 
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
