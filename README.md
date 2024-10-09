@@ -5,7 +5,7 @@
 To get started with the project, follow these steps:
 
 1. Clone the repository:<br/>
-   -`https://github.com/CSCI-441-FALL-TEAM-A/Sync.git`<br/>
+   -`git clone https://github.com/CSCI-441-FALL-TEAM-A/Sync.git`<br/>
    -`cd Sync`
 2. Install dependencies<br/>
    -`npm install`
