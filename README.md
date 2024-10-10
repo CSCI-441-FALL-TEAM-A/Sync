@@ -24,3 +24,47 @@ To get started with the project, follow these steps:
 ## Development Dependencies<br/>
 
   nodemon: a tool that helps develop Node.js applications by automatically restarting the server when it sees a file change.<br/>
+
+
+## User Type Management<br/>
+
+Operations to manage user types in the Sync system, including creating, reading, updating, and deleting user types.<br/>
+   -Endpoint: `/api/user-types/:name`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the user type by name.<br/>
+   -Example Request: `curl http://localhost:3000/api/user-types/Groupie`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Groupie",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/user-types`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new user type.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/user-types \
+-H "Content-Type: application/json" \
+-d '{"name": "SuperAdmin"}'`<br/>
+   -Successful Response: `{
+  "message": "User type 'SuperAdmin' created successfully."
+}`<br/>
+
+   -EndPoint: `/api/user-types/:name`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a usr type.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/user-types/Groupie \
+-H "Content-Type: application/json" \
+-d '{"newName": "Admin"}'`<br/>
+   -Successful Response: `{
+  "message": "User type 'Groupie' updated to 'Admin'."
+}`
+
+   -EndPoint: `/api/user-trypes/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a user type by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/user-types/Groupie`<br/>
+   -Successful Response: `{
+  "message": "User type 'Groupie' successfully deleted."
+}`
