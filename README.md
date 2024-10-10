@@ -54,9 +54,8 @@ Operations to manage user types in the Sync system, including creating, reading,
    -EndPoint: `/api/user-types/:name`<br/>
    -Method: `PUT`<br/>
    -Description: Update a usr type.<br/>
-   -Example Request: `curl -X PUT http://localhost:3000/api/user-types/Groupie \
--H "Content-Type: application/json" \
--d '{"newName": "Admin"}'`<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/user-types -H "Content-Type: application/json" -d '{"currentName": "SuperAdmin", "newName": "AdminADMIN"}'
+'`<br/>
    -Successful Response: `{
   "message": "User type 'Groupie' updated to 'Admin'."
 }`
