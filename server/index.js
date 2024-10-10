@@ -1,20 +1,26 @@
 const express = require('express');
-const { connectDB, queryDB } = require('./db/database');
-require('dotenv').config({path: '../.env'});
+const { connectDB, queryDB } = require('./config/database');  // Database functions
+const config = require('./config/config');  // App configuration
 
+// Routes
+const userTypeRoutes = require('./routes/userTypes');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = config.port;
 
 // Test the database connection on app startup
 connectDB();
 
+//Middleware to use express json.
+app.use(express.json());
+
+// Use the user type routes
+app.use('/api/user-types', userTypeRoutes);
+
 // Simple route to test the database connection and run a sample query
 app.get('/test-db', async (req, res) => {
   try {
-    // Optionally run a simple query to ensure the connection is working
-    const result = await queryDB('SELECT 1'); // This is a simple query that will always succeed
-
+    const result = await queryDB('SELECT 1');
     res.send('Database connection and query successful');
   } catch (error) {
     console.error('Database connection failed:', error);
