@@ -1,4 +1,4 @@
-const {queryDB } = require('../config/database');
+const { queryDB } = require('../config/database');
 
 /**
  * Class UserType

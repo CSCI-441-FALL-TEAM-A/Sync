@@ -4,6 +4,7 @@ const config = require('./config/config');  // App configuration
 
 // Routes
 const userTypeRoutes = require('./routes/userTypes');
+const locationRoutes = require('./routes/locations');
 
 const app = express();
 const port = config.port;
@@ -16,6 +17,9 @@ app.use(express.json());
 
 // Use the user type routes
 app.use('/api/user-types', userTypeRoutes);
+
+// Use the location routes
+app.use('/api/locations', locationRoutes);
 
 // Simple route to test the database connection and run a sample query
 app.get('/test-db', async (req, res) => {
