@@ -43,8 +43,8 @@ const Location = {
         const sanitizedCity = city.trim();
         const sanitizedState = state.trim();
 
-        if (!sanitizedCity || !sanitizedState || !sanitizedCity.match(/^[a-zA-Z]+$/) || !sanitizedState.match(/^[a-zA-Z]+$/)) {
-            throw new Error('Invalid location. Only alphabetic characters are allowed.');
+        if (!sanitizedCity.match(/^[a-zA-Z\s]+$/) || !sanitizedState.match(/^[a-zA-Z\s]+$/)){
+            throw new Error('Invalid location. Only alphabetic characters and spaces are allowed.');
         }
 
         try {
@@ -63,7 +63,67 @@ const Location = {
             console.error('Error creating location:', error);
             throw error;
         }
-    }
+    },
+
+    /**
+     * Update an existing location.
+     * @param {integer} locationId - The current id of the location.
+     * @param {string} city - The name of the new user type.
+     * @param {string} state - The name of the new user type.
+     * @returns {void}
+     * @throws Will throw an error if the uesr type does not exist or if there is a database error.
+     */
+    async updateLocation(locationId, city, state){
+        // Basic sanitization
+        const sanitizedCity = city.trim();
+        const sanitizedState = state.trim();
+
+        if (!sanitizedCity.match(/^[a-zA-Z\s]+$/) || !sanitizedState.match(/^[a-zA-Z\s]+$/)){
+            throw new Error('Invalid location. Only alphabetic characters and spaces are allowed.');
+        }
+
+        try {
+            // Check if the location exists
+            const existingLocation = await this.get(locationId);
+            if (!existingLocation) {
+                throw new Error('Location not found');
+            }
+
+            // Parameterized query for updating the location
+            const updateQuery = 'UPDATE locations SET city = $1, state = $2, updated_at = NOW() WHERE id = $3';
+            await queryDB(updateQuery, [sanitizedCity, sanitizedState, locationId]);
+
+            console.log(`Location updated: ${sanitizedCity}, ${sanitizedState}`);
+        } catch (error) {
+            console.error('Error updating location:', error);
+            throw error;
+        }
+    },
+
+
+    async deleteLocation(id) {
+        try {
+            // Check if the user type exists
+            const existingUserType = await Location.get(id);
+
+            if (!existingUserType) {
+                throw new Error('Location not found');
+            }
+
+            // Perform the soft delete by setting deleted_at to the now
+            const softDeleteQuery = 'UPDATE locations SET deleted_at = NOW() WHERE id = $1';
+            await queryDB(softDeleteQuery, [id]);
+
+            console.log(`Location id '${id}' has been soft deleted.`);
+            return { message: `Location id '${id}' successfully deleted.` };
+        } catch (error) {
+            console.error('Error soft deleting location:', error);
+            throw new Error('Failed to delete location');
+        }
+    },
+
 };
+
+
 
 module.exports = Location;

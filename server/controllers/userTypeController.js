@@ -73,12 +73,12 @@ const deleteUserType = async(req, res) => {
   try{
       const { name } = req.params;
 
-      //Soft delete user
+      //Soft delete user type
       const result = await UserType.deleteUserType(name);
 
       return res.status(200).json(result);
   } catch (error){
-      console.error('Error updating user type:', error);
+      console.error('Error soft deleting user type:', error);
       return res.status(500).json({ message: 'Internal server error' });
   }
 };

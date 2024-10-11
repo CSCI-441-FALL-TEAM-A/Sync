@@ -1,4 +1,5 @@
 const Location = require('../models/Location');
+const UserType = require("../models/UserType");
 
 /**
  * Get the location by id.
@@ -39,9 +40,45 @@ const createLocation = async(req, res) => {
         console.error('Error creating location:', error);
         return res.status(500).json({ message: 'Internal server error'});
     }
-}
+};
+
+const updateLocation = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { city, state } = req.body;
+
+        // Check if city and state were provided
+        if (!city || !state) {
+            return res.status(400).json({ message: 'City and State are required' });
+        }
+
+        // Call the update function from the Location model
+        await Location.updateLocation(id, city, state);
+
+        return res.status(200).json({ message: 'Location updated successfully' });
+    } catch (error) {
+        console.error('Error updating location:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const deleteLocation = async(req, res) => {
+    try{
+        const { id } = req.params;
+
+        //Soft delete location
+        const result = await Location.deleteLocation(id);
+
+        return res.status(200).json(result);
+    } catch (error){
+        console.error('Error soft deleting location:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 module.exports = {
     getLocationById,
     createLocation,
+    updateLocation,
+    deleteLocation,
 }
