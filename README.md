@@ -53,7 +53,7 @@ Operations to manage user types in the Sync system, including creating, reading,
 
    -EndPoint: `/api/user-types/:name`<br/>
    -Method: `PUT`<br/>
-   -Description: Update a usr type.<br/>
+   -Description: Update a user type.<br/>
    -Example Request: `curl -X PUT http://localhost:3000/api/user-types -H "Content-Type: application/json" -d '{"currentName": "SuperAdmin", "newName": "AdminADMIN"}'
 '`<br/>
    -Successful Response: `{
@@ -67,3 +67,56 @@ Operations to manage user types in the Sync system, including creating, reading,
    -Successful Response: `{
   "message": "User type 'Groupie' successfully deleted."
 }`
+
+## Location Management<br/>
+
+Operations to manager locations in the Sync system, including creating, reading, updating, and deleting locations.<br/>
+   -Endpoint: `/api/locations/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the location by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/locations/3`<br/>
+   -Successful Response: `{
+  "id": 3,
+  "city": "Knoxville",
+  "state": "Tennessee",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/locations/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new location.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/locations/create \
+-H "Content-Type: application/json" \
+-d '{"city": "Kansas City", "state": "Missouri"}'`<br/>
+   -Successful Response: `{
+  "message": "Location created successfully.",
+  "location": {
+    "id": 4,
+    "city": "Kansas City",
+    "state": "Missouri",
+    "created_at": "2023-01-01T00:00:00.000Z",
+    "updated_at": "2023-01-01T00:00:00.000Z"
+  }
+}`<br/>
+
+   -EndPoint: `/api/locations/:id`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a location.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/locations/3 \
+-H "Content-Type: application/json" \
+-d '{"city": "Nashville", "state": "Tennessee"}''`<br/>
+   -Successful Response: `{
+  "message": "Location updated successfully."
+}`<br/>
+
+-EndPoint: `/api/locations/:id`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/locations/3`<br/>
+   -Successful Response: `{
+  "message": "Location id '3' successfully deleted."
+}`
+
+
