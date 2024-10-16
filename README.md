@@ -129,8 +129,16 @@ Operations to manager proficiencys in the Sync system, including creating, readi
 
    -EndPoint: `/api/proficiency-levels/create`<br/>
    -Method: `POST`<br/>
-   -Description: Posts a new location.<br/>
+   -Description: Posts a new proficiency level.<br/>
    -Example Request: `curl -X POST http://localhost:3000/api/proficiency-levels/ \
 -H "Content-Type: application/json" \
 -d '{"name": "Expert"}'`<br/>
    -Successful Response: `{"message":"Proficiency level created successfully"}`<br/>
+
+   -EndPoint: `/api/proficiency-levels/`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a proficiency level.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/proficiency-levels \
+-H "Content-Type: application/json" \
+-d '{"currentName": "Novice", "newName": "Beginner"}'`<br/>
+   -Successful Response: `{"message":"Proficiency level updated from Beginner to Novice"}`
