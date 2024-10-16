@@ -142,3 +142,9 @@ Operations to manager proficiencys in the Sync system, including creating, readi
 -H "Content-Type: application/json" \
 -d '{"currentName": "Novice", "newName": "Beginner"}'`<br/>
    -Successful Response: `{"message":"Proficiency level updated from Beginner to Novice"}`
+
+   -EndPoint: `/api/proficiency-levels/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a roficiency levels by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/proficiency-levels/Expert`<br/>
+   -Successful Response: `{"message":"Proficiency level 'Expert' successfully deleted."}`
