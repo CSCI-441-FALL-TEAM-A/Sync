@@ -119,4 +119,10 @@ Operations to manager locations in the Sync system, including creating, reading,
   "message": "Location id '3' successfully deleted."
 }`
 
-
+## Proficiency Level Management<br/>
+Operations to manager proficiencys in the Sync system, including creating, reading, updating, and deleting locations.<br/>
+   -Endpoint: `/api/proficiency-levels/:name`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the location by name.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/Novice`<br/>
+   -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}%`<br/>
