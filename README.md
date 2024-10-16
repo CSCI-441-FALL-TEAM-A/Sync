@@ -126,3 +126,11 @@ Operations to manager proficiencys in the Sync system, including creating, readi
    -Description: Gets the details of the location by name.<br/>
    -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/Novice`<br/>
    -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}%`<br/>
+
+   -EndPoint: `/api/proficiency-levels/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new location.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/proficiency-levels/ \
+-H "Content-Type: application/json" \
+-d '{"name": "Expert"}'`<br/>
+   -Successful Response: `{"message":"Proficiency level created successfully"}`<br/>
