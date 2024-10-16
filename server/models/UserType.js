@@ -36,6 +36,7 @@ const UserType = {
         }
     },
 
+    //TODO: Ronnie, We need to be able to get by id as well.
     /**
      * Create a new user type.
      * @param {string} userTypeName - The name of the new user type.

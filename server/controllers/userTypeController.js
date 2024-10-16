@@ -22,6 +22,8 @@ const getUserTypeByName = async (req, res) => {
     }
 };
 
+//TODO: Ronnie, need to get by id as well, this is IMPORTANT
+
 /**
  * Create a new user type.
  * @param {object} req - Express request object containing the user type name in the body.
@@ -48,7 +50,7 @@ const createUserType = async (req, res) => {
 };
 
 /**
- * Get a user type by it's name..
+ * Update a user type by its name.
  * @param {object} req - Express request object containing the user type name in the body.
  * @param {object} res - Express response object.
  * @returns {Promise<void>} The function sends a success message or an error message.
@@ -69,6 +71,12 @@ const updateUserType = async(req, res) => {
     }
 };
 
+/**
+ * Delete a user type by its name.
+ * @param {object} req - Express request object containing the user type name in the body.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} The function sends a success message or an error message.
+ */
 const deleteUserType = async(req, res) => {
   try{
       const { name } = req.params;
