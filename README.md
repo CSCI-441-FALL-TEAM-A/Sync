@@ -171,4 +171,11 @@ Operations to manager genres in the Sync system, including creating, reading, up
    -Example Request: `curl -X PUT http://localhost:3000/api/genres \
 -H "Content-Type: application/json" \
 -d '{"currentName": "EDM", "newName": "Techno"}'`<br/>
-   -Successful Response: `{"message":"Genre updated from Beginner to Novice"}`
+   -Successful Response: `{"message":"Genre updated from EDM to Techno"}`
+
+   
+   -EndPoint: `/api/genres/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a genres by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/genres/Techno`<br/>
+   -Successful Response: `{"message":"Genre 'Techno' successfully deleted."}`
