@@ -23,12 +23,11 @@ const ProficiencyLevel = {
     /**
      * Get the proficiency level by name.
      * @param {string} proficiencyLevelName - The name of the proficiency level.
-     * @returns {object|null} The user type record if found, otherwise null.
-     * @throws Will throw an error if an invalid user type is provided.
+     * @returns {object|null} The proficiency level record if found, otherwise null.
+     * @throws Will throw an error if an invalid proficiency level is provided.
      */
     async get(proficiencyLevelName) {
         try {
-            // Use correct table name: proficiency_levels
             const query = 'SELECT * FROM proficiency_levels WHERE name = $1 LIMIT 1';
             const result = await queryDB(query, [proficiencyLevelName]);
             return result.length > 0 ? result[0] : null;
@@ -49,7 +48,7 @@ const ProficiencyLevel = {
         }
 
         try {
-            // Check if the user type already exists
+            // Check if the proficiency level already exists
             const existingProficiencyLevel = await this.get(sanitizedLevelName);
 
             if (existingProficiencyLevel) {
