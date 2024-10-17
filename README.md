@@ -156,3 +156,11 @@ Operations to manager genres in the Sync system, including creating, reading, up
    -Description: Gets the details of the genre by name.<br/>
    -Example Request: `curl -X GET http://localhost:3000/api/genres/Rock`<br/>
    -Successful Response: `{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null}`<br/>
+   
+   -EndPoint: `/api/genre/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new genre.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/genres/ \
+-H "Content-Type: application/json" \
+-d '{"name": "Pop"}'`<br/>
+   -Successful Response: `{"message":"Genre created successfully"}`<br/>
