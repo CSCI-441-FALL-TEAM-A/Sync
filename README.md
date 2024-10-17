@@ -123,9 +123,9 @@ Operations to manager locations in the Sync system, including creating, reading,
 Operations to manager proficiencys in the Sync system, including creating, reading, updating, and deleting locations.<br/>
    -Endpoint: `/api/proficiency-levels/:name`<br/>
    -Method: `GET`<br/>
-   -Description: Gets the details of the location by name.<br/>
+   -Description: Gets the details of the proficiency level by name.<br/>
    -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/Novice`<br/>
-   -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}%`<br/>
+   -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}`<br/>
 
    -EndPoint: `/api/proficiency-levels/create`<br/>
    -Method: `POST`<br/>
@@ -145,6 +145,37 @@ Operations to manager proficiencys in the Sync system, including creating, readi
 
    -EndPoint: `/api/proficiency-levels/:name`<br/>
    -Method: `DELETE`<br/>
-   -Description: Soft delete a roficiency levels by setting the deleted_at timestamp<br/>
+   -Description: Soft delete a proficiency levels by setting the deleted_at timestamp<br/>
    -Example Request: `curl -X DELETE http://localhost:3000/api/proficiency-levels/Expert`<br/>
    -Successful Response: `{"message":"Proficiency level 'Expert' successfully deleted."}`
+
+## Genre Management<br/>
+Operations to manager genres in the Sync system, including creating, reading, updating, and deleting locations.<br/>
+   -Endpoint: `/api/genres/:name`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the genre by name.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/genres/Rock`<br/>
+   -Successful Response: `{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null}`<br/>
+   
+   -EndPoint: `/api/genre/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new genre.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/genres/ \
+-H "Content-Type: application/json" \
+-d '{"name": "Pop"}'`<br/>
+   -Successful Response: `{"message":"Genre created successfully"}`<br/>
+
+   -EndPoint: `/api/genres/`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a proficiency level.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/genres \
+-H "Content-Type: application/json" \
+-d '{"currentName": "EDM", "newName": "Techno"}'`<br/>
+   -Successful Response: `{"message":"Genre updated from EDM to Techno"}`
+
+   
+   -EndPoint: `/api/genres/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a genres by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/genres/Techno`<br/>
+   -Successful Response: `{"message":"Genre 'Techno' successfully deleted."}`
