@@ -164,3 +164,11 @@ Operations to manager genres in the Sync system, including creating, reading, up
 -H "Content-Type: application/json" \
 -d '{"name": "Pop"}'`<br/>
    -Successful Response: `{"message":"Genre created successfully"}`<br/>
+
+   -EndPoint: `/api/genres/`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a proficiency level.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/genres \
+-H "Content-Type: application/json" \
+-d '{"currentName": "EDM", "newName": "Techno"}'`<br/>
+   -Successful Response: `{"message":"Genre updated from Beginner to Novice"}`
