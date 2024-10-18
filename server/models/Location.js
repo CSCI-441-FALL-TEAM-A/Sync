@@ -93,9 +93,9 @@ const Location = {
             const updateQuery = 'UPDATE locations SET city = $1, state = $2, updated_at = NOW() WHERE id = $3';
             await queryDB(updateQuery, [sanitizedCity, sanitizedState, locationId]);
 
-            console.log(`Location updated: ${sanitizedCity}, ${sanitizedState}`);
+            // changed this console.log(`Location updated: ${sanitizedCity}, ${sanitizedState}`);
         } catch (error) {
-            console.error('Error updating location:', error);
+            // changed this console.error('Error updating location:', error);
             throw error;
         }
     },
@@ -117,7 +117,7 @@ const Location = {
             console.log(`Location id '${id}' has been soft deleted.`);
             return { message: `Location id '${id}' successfully deleted.` };
         } catch (error) {
-            console.error('Error soft deleting location:', error);
+            // changed this console.error('Error soft deleting location:', error);
             throw new Error('Failed to delete location');
         }
     },
