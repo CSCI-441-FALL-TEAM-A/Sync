@@ -60,7 +60,7 @@ const ProficiencyLevel = {
             await queryDB(insertQuery, [sanitizedLevelName]);
 
         } catch (error) {
-            console.error('Error creating proficiency level:', sanitizedLevelName);
+            // changed this console.error('Error creating proficiency level:', sanitizedLevelName);
             throw error;
         }
     },
@@ -84,7 +84,10 @@ const ProficiencyLevel = {
 
             console.log(`Proficiency Level updated from ${currentName} to ${newName}`);
         } catch (error){
-            console.error('Error updating proficiency level:', error);
+            // changed this console.error('Error updating proficiency level:', error);
+            
+            // added throw 
+            throw error;
         }
     },
 
@@ -105,7 +108,7 @@ const ProficiencyLevel = {
             return { message: `Proficiency level '${name}' successfully deleted.` };
         } catch (error) {
             console.error('Error soft deleting proficiency level:', error);
-            throw new Error('Failed to delete proficiency level');
+            throw new Error('Proficiency level not found');
         }
     },
 };

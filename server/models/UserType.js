@@ -64,7 +64,7 @@ const UserType = {
             await queryDB(insertQuery, [sanitizedTypeName]);
 
         } catch (error) {
-            console.error('Error creating user type:', sanitizedTypeName);
+            // changed this console.error('Error creating user type:', sanitizedTypeName);
             throw error;
         }
     },
@@ -96,7 +96,10 @@ const UserType = {
 
             console.log(`User type updated from ${currentName} to ${newName}`);
         } catch (error){
-            console.error('Error updating user type:', error);
+            // changed this console.error('Error updating user type:', error);
+
+            // added throw error
+            throw error;
         }
     },
 
@@ -116,7 +119,7 @@ const UserType = {
             console.log(`User type '${name}' has been soft deleted.`);
             return { message: `User type '${name}' successfully deleted.` };
         } catch (error) {
-            console.error('Error soft deleting user type:', error);
+            // changed this console.error('Error soft deleting user type:', error);
             throw new Error('Failed to delete user type');
         }
     },
