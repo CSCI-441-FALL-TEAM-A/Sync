@@ -14,6 +14,26 @@ To get started with the project, follow these steps:
 4. To run the server in production mode<br/>
    -`npm start`
 
+## Git flow
+
+The team procedures for git:
+
+1. Pull main into your main branch:<br/>
+   -`git checkout main`<br/>
+   -`git pull origin main`<br/>
+2. Make a branch off of main with the following template, using that to seperate pull request<br/>
+   -Backend:`git checkout -b backend/[your feature information here]`
+   -Frontend:`git checkout -b frontend/[your feature information here]`
+   -Tests:`git checkout -b tests/[your feature information here]`
+   -Infrastucture:`git checkout -b infra/[your feature information here]`
+3. When you are ready to push up your code:<br/>
+   -`git status` To see what files you have changed<br/>
+   -`git diff [filename[` Check the differences in your files from main<br/>
+   -`git add [file names, files names, etc]` Try to do one file at a time while checking the diff, will cut down on errors<br/>
+   -`git commit -m "Your Message Here, try to be descriptive about what it does"` Commit message to inform what pull request does<br/>
+   -`git push [your branch name]` Please make sure this is your branch name<br/>
+4. At this point message the team on Discord you need a Pull Request Reviewed, and they will pull it down and check it.
+   
 ## Dependenencies:<br/>
 
   express: a minimal and flexible Node.js web application framework.<br/>
