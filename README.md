@@ -199,3 +199,29 @@ Operations to manager genres in the Sync system, including creating, reading, up
    -Description: Soft delete a genres by setting the deleted_at timestamp<br/>
    -Example Request: `curl -X DELETE http://localhost:3000/api/genres/Techno`<br/>
    -Successful Response: `{"message":"Genre 'Techno' successfully deleted."}`
+
+## Genre Management<br/>
+Operations to manager users in the Sync system, including creating, reading, updating, and deleting locations.<br/>
+   -Endpoint: `/api/users/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the user by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/users/3`<br/>
+   -Successful Response: `{"id":"7","email":"testmusician5@example.com","password":"hashedpassword","first_name":"John","last_name":"Musican","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:45:49.238Z","updated_at":"2024-10-19T00:45:49.238Z","deleted_at":null}`<br/>
+   
+   -EndPoint: `/api/users/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new user.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/genres/ \
+-H "Content-Type: application/json" \
+-d '{"name": "Pop"}'`<br/>
+   -Successful Response: `curl -X POST http://localhost:3000/api/users \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "testmusician5@example.com",
+  "password": "hashedpassword",
+  "first_name": "John",
+  "last_name": "Musican",
+  "birthday": "1990-01-01",
+  "user_type": 2
+}'
+`<br/>
