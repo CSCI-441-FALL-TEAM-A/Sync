@@ -237,3 +237,11 @@ Operations to manager users in the Sync system, including creating, reading, upd
   "last_name": "NewLastName"
 }'`<br/>
 -Successful Response: `{"id":"2","email":"newemail2@example.com","password":"hashedpassword","first_name":"NewFirstName","last_name":"NewLastName","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:35:56.021Z","updated_at":"2024-10-20T01:39:58.550Z","deleted_at":null}`<br/>
+
+-EndPoint: /api/users/:id</br>
+-Method: DELETE</br>
+-Description: Soft delete a user by setting the deleted_at timestamp</br>
+-Example Request: `curl -X DELETE http://localhost:3000/api/users/3`</br>
+-Successful Response: `{ "message": "User id '3' successfully deleted." }`</br>
+
+## Profile Management<br/>
