@@ -235,5 +235,5 @@ Operations to manager users in the Sync system, including creating, reading, upd
   "email": "newemail2@example.com",
   "first_name": "NewFirstName",
   "last_name": "NewLastName"
-}'`
+}'`<br/>
 -Successful Response: `{"id":"2","email":"newemail2@example.com","password":"hashedpassword","first_name":"NewFirstName","last_name":"NewLastName","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:35:56.021Z","updated_at":"2024-10-20T01:39:58.550Z","deleted_at":null}`<br/>
