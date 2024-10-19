@@ -103,10 +103,10 @@ const Location = {
 
     async deleteLocation(id) {
         try {
-            // Check if the user type exists
-            const existingUserType = await Location.get(id);
+            // Check if the location exists
+            const existingLocation = await Location.get(id);
 
-            if (!existingUserType) {
+            if (!existingLocation) {
                 throw new Error('Location not found');
             }
 

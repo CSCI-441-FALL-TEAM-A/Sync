@@ -1,5 +1,4 @@
 const Location = require('../models/Location');
-const UserType = require("../models/UserType");
 
 /**
  * Get the location by id.
