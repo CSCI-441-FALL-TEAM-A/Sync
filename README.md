@@ -200,7 +200,7 @@ Operations to manager genres in the Sync system, including creating, reading, up
    -Example Request: `curl -X DELETE http://localhost:3000/api/genres/Techno`<br/>
    -Successful Response: `{"message":"Genre 'Techno' successfully deleted."}`
 
-## Genre Management<br/>
+## User Management<br/>
 Operations to manager users in the Sync system, including creating, reading, updating, and deleting locations.<br/>
    -Endpoint: `/api/users/:id`<br/>
    -Method: `GET`<br/>
@@ -225,3 +225,15 @@ Operations to manager users in the Sync system, including creating, reading, upd
   "user_type": 2
 }'
 `<br/>
+
+-EndPoint: /api/users/
+-Method: PUT
+-Description: Update a user.
+-Example Request: `curl -X PUT http://localhost:3000/api/users/2 \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "newemail2@example.com",
+  "first_name": "NewFirstName",
+  "last_name": "NewLastName"
+}'`
+-Successful Response: `{"id":"2","email":"newemail2@example.com","password":"hashedpassword","first_name":"NewFirstName","last_name":"NewLastName","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:35:56.021Z","updated_at":"2024-10-20T01:39:58.550Z","deleted_at":null}`<br/>
