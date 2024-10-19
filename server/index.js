@@ -7,6 +7,7 @@ const userTypeRoutes = require('./routes/userTypes');
 const locationRoutes = require('./routes/locations');
 const proficiencyLevelRoutes = require('./routes/proficiencyLevels');
 const genreRoutes = require('./routes/genres');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const port = config.port;
@@ -28,6 +29,9 @@ app.use('/api/proficiency-levels', proficiencyLevelRoutes);
 
 // Use genre routes
 app.use('/api/genres', genreRoutes);
+
+// Use user routes
+app.use('/api/users', userRoutes);
 
 // Simple route to test the database connection and run a sample query
 app.get('/test-db', async (req, res) => {
