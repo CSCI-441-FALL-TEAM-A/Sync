@@ -31,7 +31,41 @@ const Genre = {
         }
     },
 
-    //TODO: Ronnie, We need to be able to get by id as well.
+    async getGenreById(genreId){
+        try {
+            const query = 'SELECT * FROM genres WHERE id = $1 LIMIT 1';
+            const result = await queryDB(query, [genreId]);
+            return result.length > 0 ? result[0] : null;
+        } catch (error){
+            console.error('Error fetching genre by id:', genreId);
+            throw error;
+        }
+    },
+
+    /**
+     * Get genre names based on an array of genre IDs.
+     * @param {Array} genreIds - Array of genre IDs to fetch names for.
+     * @returns {Object} An object mapping genre IDs to genre names.
+     */
+    async getGenresByIds(genreIds) {
+        const query = `
+        SELECT id, name
+        FROM genres
+        WHERE id = ANY($1::int[]);
+        `;
+
+        try {
+            const rows = await queryDB(query, [genreIds]);
+            // Convert the result into an object: {1: 'rock', 2: 'jazz'}
+            return rows.reduce((acc, genre) => {
+                acc[genre.id] = genre.name;
+                return acc;
+            }, {});
+        } catch (error) {
+            console.error('Error fetching genres:', error);
+            throw error;
+        }
+    },
 
     async createGenre(genreName) {
         // Basic sanitization
