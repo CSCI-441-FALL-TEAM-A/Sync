@@ -4,7 +4,7 @@ const ProfileResponse = (profile, user_type = 'guest') => {
     const response = {
         id: profile.id,
         gender: profile.gender,
-        instruments: profile.instruments,
+        instruments: profile.instruments, //TODO: Ronnie, update to return instrument id and name.
         proficiency_level: profile.proficiency_level,
         genres: profile.genres,
         created_at: profile.created_at,
