@@ -22,7 +22,27 @@ const getUserTypeByName = async (req, res) => {
     }
 };
 
-//TODO: Ronnie, need to get by id as well, this is IMPORTANT
+/**
+ * Get the user type by id.
+ * @param {object} req - Express request object containing the user type id in params.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} The function sends a response with the user type details or an error message.
+ */
+const getUserTypeById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userType = await UserType.getUserTypeById(id);
+
+        if (!userType) {
+            return res.status(404).json({ message: 'User type not found' });
+        }
+
+        return res.status(200).json(userType);
+    } catch (error) {
+        console.error('Error fetching user type:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 /**
  * Create a new user type.
@@ -93,6 +113,7 @@ const deleteUserType = async(req, res) => {
 
 module.exports = {
     getUserTypeByName,
+    getUserTypeById,
     createUserType,
     updateUserType,
     deleteUserType,

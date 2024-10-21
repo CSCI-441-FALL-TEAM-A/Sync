@@ -25,7 +25,28 @@ const getGenreByName = async(req, res) => {
 };
 
 
-//TODO: Ronnie, need to get by id as well, this is IMPORTANT
+/**
+ * Get the genre by id.
+ * @param {object} req - Express request object containing the genre id in params.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} The function sends a response with the genre details or an error message.
+ */
+
+const getGenreById = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const genre = await Genre.getGenreById(id);
+
+        if (!genre) {
+            return res.status(404).json({ message: 'Genre not found' });
+        }
+
+        return res.status(200).json(genre);
+    } catch (error) {
+        console.error('Error fetching genre:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 /**
  * Create a new genre.
@@ -100,6 +121,7 @@ const deleteGenre = async (req, res) => {
 
 module.exports = {
     getGenreByName,
+    getGenreById,
     createGenre,
     updateGenre,
     deleteGenre

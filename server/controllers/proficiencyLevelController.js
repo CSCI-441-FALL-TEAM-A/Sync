@@ -26,7 +26,28 @@ const getProficiencyLevelByName = async(req, res) => {
 }
 
 
-//TODO: Ronnie, need to get by id as well, this is IMPORTANT
+/**
+ * Get the proficiency level by id.
+ * @param {object} req - Express request object containing the proficiency level id in params.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} The function sends a response with the proficiency level details or an error message.
+ */
+
+const getProficiencyLevelById = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const proficiencyLevel = await ProficiencyLevel.getProficiencyById(id);
+
+        if (!proficiencyLevel) {
+            return res.status(404).json({ message: 'Proficiency level not found' });
+        }
+
+        return res.status(200).json(proficiencyLevel);
+    } catch (error) {
+        console.error('Error fetching proficiency level:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
 
 /**
  * Create a new proficiency level.
@@ -101,6 +122,7 @@ const deleteProficiencyLevel = async (req, res) => {
 
 module.exports = {
     getProficiencyLevelByName,
+    getProficiencyLevelById,
     createProficiencyLevel,
     updateProficiencyLevel,
     deleteProficiencyLevel,
