@@ -1,4 +1,7 @@
 const Profile = require('../models/profile');
+const ProfileResponse = require("../responses/ProfileResponse");
+const Genre = require("../models/Genre");
+const ProficiencyLevel = require("../models/ProficiencyLevel");
 
 const getProfileById = async(req, res) => {
     try{
@@ -9,7 +12,21 @@ const getProfileById = async(req, res) => {
             return res.status(404).json({ message: 'Profile not found'});
         }
 
-        return res.status(200).json(profile);
+        // Fetch the genre names based on the genre IDs in the profile
+        const genreMapping = await Genre.getGenresByIds(profile.genres);
+
+        // Map genre IDs to names in the profile
+        profile.genres = profile.genres.map(genreId => ({
+            id: genreId,
+            name: genreMapping[genreId] || 'Unknown'
+        }));
+
+        // Fetch the proficiency level name based on the profile's proficiency_level
+        profile.proficiency_level = await ProficiencyLevel.getProficiencyById(profile.proficiency_level);
+
+        const user_type = req?.user?.user_type;
+        const response = ProfileResponse(profile, user_type);
+        return res.status(200).json(response);
     }catch(error){
         console.log('Error fetch profile:', error);
         return res.status(500).json({ message: 'Internal server error'});

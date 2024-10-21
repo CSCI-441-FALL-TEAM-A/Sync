@@ -25,7 +25,16 @@ const Profile = {
      *      */
     async get(profileId){
         try{
-            const query = 'SELECT * FROM profiles WHERE id = $1 LIMIT 1';
+            const query = `
+        SELECT 
+            profiles.*,
+            users.first_name,
+            users.last_name
+        FROM profiles
+        JOIN users ON profiles.user_id = users.id
+        WHERE profiles.id = $1
+        LIMIT 1;
+        `;
             const result = await queryDB(query, [profileId]);
             return result.length > 0 ? result[0] : null;
         }catch (error){

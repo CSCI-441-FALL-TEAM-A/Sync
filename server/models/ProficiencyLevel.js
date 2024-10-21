@@ -37,7 +37,27 @@ const ProficiencyLevel = {
         }
     },
 
-    //TODO: Ronnie, We need to be able to get by id as well.
+    /**
+     * Get proficiency level name based on the level ID.
+     * @param {number} levelId - The proficiency level ID.
+     * @returns {string} The name of the proficiency level.
+     */
+    async getProficiencyById(levelId) {
+        const query = `
+        SELECT name
+        FROM proficiency_levels
+        WHERE id = $1
+        LIMIT 1;
+        `;
+
+        try {
+            const rows = await queryDB(query, [levelId]);
+            return rows.length > 0 ? rows[0].name : 'Unknown';
+        } catch (error) {
+            console.error('Error fetching proficiency level:', error);
+            throw error;
+        }
+    },
 
     async createProficiencyLevel(proficiencyLevelName) {
         // Basic sanitization
