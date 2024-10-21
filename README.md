@@ -49,10 +49,22 @@ The team procedures for git:
 ## User Type Management<br/>
 
 Operations to manage user types in the Sync system, including creating, reading, updating, and deleting user types.<br/>
-   -Endpoint: `/api/user-types/:name`<br/>
+   -Endpoint: `/api/user-types/name/:name`<br/>
    -Method: `GET`<br/>
    -Description: Gets the details of the user type by name.<br/>
-   -Example Request: `curl http://localhost:3000/api/user-types/Groupie`<br/>
+   -Example Request: `curl http://localhost:3000/api/user-types/name/Groupie`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Groupie",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -Endpoint: `/api/user-types/id/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the user type by name.<br/>
+   -Example Request: `curl http://localhost:3000/api/user-types/id/1`<br/>
    -Successful Response: `{
   "id": 1,
   "name": "Groupie",
