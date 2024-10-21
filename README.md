@@ -215,10 +215,16 @@ Operations to manage matches in the Sync system, including creating, reading, up
 
 ## Proficiency Level Management<br/>
 Operations to manager proficiencys in the Sync system, including creating, reading, updating, and deleting locations.<br/>
-   -Endpoint: `/api/proficiency-levels/:name`<br/>
+   -Endpoint: `/api/proficiency-levels/name/:name`<br/>
    -Method: `GET`<br/>
    -Description: Gets the details of the proficiency level by name.<br/>
-   -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/Novice`<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/name/Novice`<br/>
+   -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}`<br/>
+
+   -Endpoint: `/api/proficiency-levels/id/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the proficiency level by id.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/proficiency-levels/id/1`<br/>
    -Successful Response: `{"id":"1","name":"Novice","created_at":"2024-10-12T00:54:37.613Z","updated_at":"2024-10-12T00:54:37.613Z","deleted_at":null}`<br/>
 
    -EndPoint: `/api/proficiency-levels/create`<br/>
