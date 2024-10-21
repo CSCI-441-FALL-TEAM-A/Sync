@@ -113,6 +113,7 @@ const Genre = {
             console.log(`Genre updated from ${currentName} to ${newName}`);
         } catch (error){
             console.error('Error updating proficiency level:', error);
+            throw error; // Make sure the error is thrown 
         }
     },
 
