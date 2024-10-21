@@ -245,10 +245,16 @@ Operations to manager proficiencys in the Sync system, including creating, readi
 
 ## Genre Management<br/>
 Operations to manager genres in the Sync system, including creating, reading, updating, and deleting locations.<br/>
-   -Endpoint: `/api/genres/:name`<br/>
+   -Endpoint: `/api/genres/name/:name`<br/>
    -Method: `GET`<br/>
    -Description: Gets the details of the genre by name.<br/>
-   -Example Request: `curl -X GET http://localhost:3000/api/genres/Rock`<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/genres/name/Rock`<br/>
+   -Successful Response: `{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null}`<br/>
+
+   -Endpoint: `/api/genres/id/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the genre by name.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/genres/id/1`<br/>
    -Successful Response: `{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null}`<br/>
    
    -EndPoint: `/api/genre/create`<br/>
