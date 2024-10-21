@@ -340,7 +340,7 @@ Operations to manager profiles in the Sync system, including creating, reading, 
 
    -EndPoint: `/api/profiles/`<br/>
    -Method: `POST`<br/>
-   -Description: Posts a new location.<br/>
+   -Description: Posts a new profile.<br/>
    -Example Request: `curl -X POST http://localhost:3000/api/profiles \
 -H "Content-Type: application/json" \
 -d '{
@@ -352,9 +352,9 @@ Operations to manager profiles in the Sync system, including creating, reading, 
 }''`<br/>
    -Successful Response: `{"id":"2","user_id":"1","gender":"male","instruments":[1,2],"proficiency_level":3,"genres":[1,2,3],"created_at":"2024-10-21T23:21:03.549Z","updated_at":"2024-10-21T23:21:03.549Z","deleted_at":null}`<br/>
 
-   -EndPoint: `/api/locations/:id`<br/>
+   -EndPoint: `/api/profiles/:id`<br/>
    -Method: `PUT`<br/>
-   -Description: Update a location.<br/>
+   -Description: Update a profile.<br/>
    -Example Request: `curl -X PUT http://localhost:3000/api/profiles/2 \
 -H "Content-Type: application/json" \
 -d '{
@@ -369,6 +369,6 @@ Operations to manager profiles in the Sync system, including creating, reading, 
 
   -EndPoint: `/api/profiles/:id`<br/>
    -Method: `DELETE`<br/>
-   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Description: Soft delete a profile by setting the deleted_at timestamp<br/>
    -Example Request: `curl -X DELETE http://localhost:3000/api/profiles/2 `<br/>
    -Successful Response: `{"message":"Profile id '2' successfully deleted."}`
