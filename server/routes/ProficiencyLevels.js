@@ -1,9 +1,11 @@
 const express = require('express');
-const {getProficiencyLevelByName, createProficiencyLevel, updateProficiencyLevel, deleteProficiencyLevel} = require('../controllers/proficiencyLevelController');
+const {getProficiencyLevelByName, getProficiencyLevelById, createProficiencyLevel, updateProficiencyLevel, deleteProficiencyLevel} = require('../controllers/proficiencyLevelController');
 const router = express.Router();
 
 //Route to get proficiency level by name
-router.get('/:name', getProficiencyLevelByName);
+router.get('/name/:name', getProficiencyLevelByName);
+//Route to get proficiency level by name
+router.get('/id/:id', getProficiencyLevelById);
 //Route to add proficiency level by name
 router.post('/', createProficiencyLevel);
 //Route to update proficiency level by name

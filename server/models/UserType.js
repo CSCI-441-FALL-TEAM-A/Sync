@@ -36,7 +36,16 @@ const UserType = {
         }
     },
 
-    //TODO: Ronnie, We need to be able to get by id as well.
+    async getUserTypeById(userTypeId) {
+        try {
+            const query = 'SELECT * FROM user_types WHERE id = $1 LIMIT 1';
+            const result = await queryDB(query, [userTypeId]);
+            return result.length > 0 ? result[0] : null;
+        } catch (error) {
+            console.error('Error fetching user type by id:', userTypeId);
+            throw error;
+        }
+    },
     /**
      * Create a new user type.
      * @param {string} userTypeName - The name of the new user type.
