@@ -6,10 +6,10 @@ const { queryDB } = require('../config/database');
  * ProficiencyLevel represents the level of skill a user has (e.g. 'Novice', 'Intermediate', 'Advanced', 'Pro').
  *
  * @property {number} id - The unique identifier for the proficiency level.
- * @property {string} name - The name of the user type.
- * @property {Date} created_at - Timestamp when the user type was created.
- * @property {Date} updated_at - Timestamp when the user type was last updated.
- * @property {Date|null} deleted_at - Timestamp when the user type was deleted, or null if active.
+ * @property {string} name - The name of the proficiency level.
+ * @property {Date} created_at - Timestamp when the proficiency level was created.
+ * @property {Date} updated_at - Timestamp when the proficiency level was last updated.
+ * @property {Date|null} deleted_at - Timestamp when the proficiency level was deleted, or null if active.
  */
 
 const ProficiencyLevel = {
@@ -37,7 +37,27 @@ const ProficiencyLevel = {
         }
     },
 
-    //TODO: Ronnie, We need to be able to get by id as well.
+    /**
+     * Get proficiency level name based on the level ID.
+     * @param {number} levelId - The proficiency level ID.
+     * @returns {string} The name of the proficiency level.
+     */
+    async getProficiencyById(levelId) {
+        const query = `
+        SELECT name
+        FROM proficiency_levels
+        WHERE id = $1
+        LIMIT 1;
+        `;
+
+        try {
+            const rows = await queryDB(query, [levelId]);
+            return rows.length > 0 ? rows[0].name : 'Unknown';
+        } catch (error) {
+            console.error('Error fetching proficiency level:', error);
+            throw error;
+        }
+    },
 
     async createProficiencyLevel(proficiencyLevelName) {
         // Basic sanitization
