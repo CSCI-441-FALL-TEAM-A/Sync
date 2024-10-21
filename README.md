@@ -280,3 +280,9 @@ Operations to manager profiles in the Sync system, including creating, reading, 
 `<br/>
    -Successful Response: `{
   {"id":"2","user_id":"1","gender":"female","instruments":[3,4],"proficiency_level":4,"genres":[1,3],"created_at":"2024-10-21T23:21:03.549Z","updated_at":"2024-10-21T23:42:49.407Z","deleted_at":null}`<br/>
+
+  -EndPoint: `/api/profiles/:id`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/profiles/2 `<br/>
+   -Successful Response: `{"message":"Profile id '2' successfully deleted."}`
