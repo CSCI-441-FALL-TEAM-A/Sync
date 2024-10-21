@@ -251,3 +251,32 @@ Operations to manager profiles in the Sync system, including creating, reading, 
    -Description: Gets the details of the profile by id.<br/>
    -Example Request: `curl http://localhost:3000/api/profiles/1`<br/>
    -Successful Response: `{"id":"1","user_id":"4","gender":"Male","instruments":[1],"proficiency_level":1,"genres":[1],"created_at":"2024-10-21T22:49:24.612Z","updated_at":"2024-10-21T22:49:24.612Z","deleted_at":null}`<br/>
+
+   -EndPoint: `/api/profiles/`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new location.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/profiles \
+-H "Content-Type: application/json" \
+-d '{
+  "user_id": 1,
+  "gender": "male",
+  "instruments": [1, 2],
+  "proficiency_level": 3,
+  "genres": [1, 2, 3]
+}''`<br/>
+   -Successful Response: `{"id":"2","user_id":"1","gender":"male","instruments":[1,2],"proficiency_level":3,"genres":[1,2,3],"created_at":"2024-10-21T23:21:03.549Z","updated_at":"2024-10-21T23:21:03.549Z","deleted_at":null}`<br/>
+
+   -EndPoint: `/api/locations/:id`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a location.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/profiles/2 \
+-H "Content-Type: application/json" \
+-d '{
+  "gender": "female",
+  "instruments": [3, 4],
+  "proficiency_level": 4,
+  "genres": [1, 3]
+}'
+`<br/>
+   -Successful Response: `{
+  {"id":"2","user_id":"1","gender":"female","instruments":[3,4],"proficiency_level":4,"genres":[1,3],"created_at":"2024-10-21T23:21:03.549Z","updated_at":"2024-10-21T23:42:49.407Z","deleted_at":null}`<br/>
