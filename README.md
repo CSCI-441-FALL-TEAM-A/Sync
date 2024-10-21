@@ -245,3 +245,9 @@ Operations to manager users in the Sync system, including creating, reading, upd
 -Successful Response: `{ "message": "User id '3' successfully deleted." }`</br>
 
 ## Profile Management<br/>
+Operations to manager profiles in the Sync system, including creating, reading, updating, and deleting profiles.<br/>
+   -Endpoint: `/api/profiles/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the profile by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/profiles/1`<br/>
+   -Successful Response: `{"id":"1","user_id":"4","gender":"Male","instruments":[1],"proficiency_level":1,"genres":[1],"created_at":"2024-10-21T22:49:24.612Z","updated_at":"2024-10-21T22:49:24.612Z","deleted_at":null}`<br/>
