@@ -90,7 +90,7 @@ Operations to manage user types in the Sync system, including creating, reading,
 
 ## Location Management<br/>
 
-Operations to manager locations in the Sync system, including creating, reading, updating, and deleting locations.<br/>
+Operations to manage locations in the Sync system, including creating, reading, updating, and deleting locations.<br/>
    -Endpoint: `/api/locations/:id`<br/>
    -Method: `GET`<br/>
    -Description: Gets the details of the location by id.<br/>
@@ -137,6 +137,68 @@ Operations to manager locations in the Sync system, including creating, reading,
    -Example Request: `curl -X DELETE http://localhost:3000/api/locations/3`<br/>
    -Successful Response: `{
   "message": "Location id '3' successfully deleted."
+}`
+
+## Match Management<br/>
+
+Operations to manage matches in the Sync system, including creating, reading, updating, and deleting matches.<br/>
+   -Endpoint: `/api/matches/:id`<br/> 
+   -Method: `GET`<br/>
+   -Description: Gets the details of the match by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/matches/3`<br/>
+   -Successful Response: `{
+  "id": 3,
+  "user_id_one":"1",
+  "user_id_two":"2",
+  "status":0,
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/matches/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new match.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/matches/create \
+-H "Content-Type: application/json" \
+-d '{"user_id_one": 1, "user_id_two": 2, "status": 0}'`<br/>
+   -Successful Response: `{
+  "message": "Match created successfully.",
+  "match": {
+    "id": "3",
+    "user_id_one": "1",
+    "user_id_two": "2",
+    "status": 0,
+    "created_at": "2023-01-01T00:00:00.000Z",
+    "updated_at": "2023-01-01T00:00:00.000Z"
+  }
+}`<br/>
+
+   -EndPoint: `/api/matches/:id`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a match.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/matches/1 \
+-H "Content-Type: application/json" \
+-d '{"status": 1}''`<br/>
+   -Successful Response: `{
+  "message": "Match updated successfully."
+  "match": {
+   "id":"1",
+   "user_id_one":"1",
+   "user_id_two":"2",
+   "status":1,
+   "created_at":"2023-01-01T00:00:00.000Z",
+   "updated_at":"2023-01-01T00:00:00.000Z",
+   "deleted_at":null
+  }
+}`<br/>
+
+-EndPoint: `/api/locations/:id`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/matches/3`<br/>
+   -Successful Response: `{
+  "message": "Match id '3' successfully deleted."
 }`
 
 ## Proficiency Level Management<br/>
