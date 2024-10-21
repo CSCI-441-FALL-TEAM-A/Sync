@@ -6,10 +6,10 @@ const { queryDB } = require('../config/database');
  * ProficiencyLevel represents the level of skill a user has (e.g. 'Novice', 'Intermediate', 'Advanced', 'Pro').
  *
  * @property {number} id - The unique identifier for the proficiency level.
- * @property {string} name - The name of the user type.
- * @property {Date} created_at - Timestamp when the user type was created.
- * @property {Date} updated_at - Timestamp when the user type was last updated.
- * @property {Date|null} deleted_at - Timestamp when the user type was deleted, or null if active.
+ * @property {string} name - The name of the proficiency level.
+ * @property {Date} created_at - Timestamp when the proficiency level was created.
+ * @property {Date} updated_at - Timestamp when the proficiency level was last updated.
+ * @property {Date|null} deleted_at - Timestamp when the proficiency level was deleted, or null if active.
  */
 
 const ProficiencyLevel = {
