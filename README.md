@@ -205,12 +205,70 @@ Operations to manage matches in the Sync system, including creating, reading, up
   }
 }`<br/>
 
--EndPoint: `/api/locations/:id`<br/>
+-EndPoint: `/api/matches/:id`<br/>
    -Method: `DELETE`<br/>
-   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Description: Soft delete a match by setting the deleted_at timestamp<br/>
    -Example Request: `curl -X DELETE http://localhost:3000/api/matches/3`<br/>
    -Successful Response: `{
   "message": "Match id '3' successfully deleted."
+}`
+
+## Instrument Management<br/>
+
+Operations to manage instruments in the Sync system, including creating, reading, updating, and deleting instruments.<br/>
+   -Endpoint: `/api/instruments/:id`<br/> 
+   -Method: `GET`<br/>
+   -Description: Gets the details of the instrument by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/instruments/1`<br/>
+   -Successful Response: `{
+   "id": 1,
+   "name":"Guitar",
+   "created_at": "2023-01-01T00:00:00.000Z",
+   "updated_at": "2023-01-01T00:00:00.000Z",
+   "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/instruments/create`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new instrument.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/instruments/create \
+-H "Content-Type: application/json" \
+-d '{"name": "Guitar"}'`<br/>
+   -Successful Response: `{
+   "id": "1",
+   "name":"Guitar",
+   "created_at": "2023-01-01T00:00:00.000Z",
+   "updated_at": "2023-01-01T00:00:00.000Z",
+   "deleted_at":null
+}`<br/>
+
+   -EndPoint: `/api/instruments/:id`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update an existing instrument.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/instruments/4 \
+-H "Content-Type: application/json" \
+-d '{"name": "Tamborine"}''`<br/>
+   -Successful Response: `{
+    "id":4,
+    "name":"Tamborine",
+    "created_at": "2023-01-01T00:00:00.000Z",
+    "updated_at": "2023-01-01T00:00:00.000Z",
+    "deleted_at":null
+}`<br/>
+
+-EndPoint: `/api/instruments/:id`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a location by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/instruments/4`<br/>
+   -Successful Response: `{
+   "message": "Instrument soft deleted successfully",
+   "deletedInstrument":{
+      "id": 4,
+      "name": "Tamborine",
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "updated_at": "2023-01-01T00:00:00.000Z",
+      "deleted_at": "2024-01-01T00:00:00.000Z"
+   }
 }`
 
 ## Proficiency Level Management<br/>

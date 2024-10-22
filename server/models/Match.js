@@ -15,13 +15,13 @@ const { queryDB } = require('../config/database');
  */
 
 const Match = {
+
     /**
      * Get the match by id.
      * @param {int} matchId - The id of the match.
      * @returns {object|null} The match record if found, else null.
      * @throws Will throw an error if an invalid match is provided.
      */
-
     async get(matchId){
         try{
             const query = 'SELECT * FROM matches WHERE id = $1 LIMIT 1';
@@ -32,7 +32,8 @@ const Match = {
             throw error;
         }
     },
-    /**
+
+
     /**
      * Create a new match.
      * @param {number} user_id_one - The unique identifier for the first user.
@@ -65,6 +66,7 @@ const Match = {
             throw error;
         }
     },
+
 
     /**
      * Update an existing match.
@@ -124,6 +126,12 @@ const Match = {
     },
 
 
+    /**
+     * Soft delete a match by setting the deleted_at timestamp.
+     * @param {number} id - The unique identifier of the match to be soft deleted.
+     * @returns {object} An object with a success message if the match is soft deleted, or an error if it fails.
+     * @throws Will throw an error if the match is not found or if the deletion fails.
+     */
     async deleteMatch(id) {
         try {
             // Check if the match exists
