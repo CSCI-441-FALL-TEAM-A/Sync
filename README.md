@@ -13,7 +13,7 @@ To get started with the project, follow these steps:
    -`npm run dev`
 4. To run the server in production mode<br/>
    -`npm start`
-5. When working locally Sync is serving the html via express on local host:
+5. When working locally Sync is serving the html via express on local host:<br/>
    -`http://localhost:3000/`
 
 ## Git flow
