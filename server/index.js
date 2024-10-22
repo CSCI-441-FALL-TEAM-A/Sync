@@ -8,10 +8,9 @@ const locationRoutes = require('./routes/locations');
 const proficiencyLevelRoutes = require('./routes/proficiencyLevels');
 const genreRoutes = require('./routes/genres');
 const userRoutes = require('./routes/users');
-
 const matchRoutes = require('./routes/Matches');
-
 const profileRoutes = require('./routes/profiles');
+const instrumentRoutes = require('./routes/Instruments');
 
 
 const app = express();
@@ -44,6 +43,9 @@ app.use('/api/matches', matchRoutes);
 
 // Use profile routes
 app.use('/api/profiles', profileRoutes);
+
+// Use instrument routes
+app.use('/api/instruments', instrumentRoutes);
 
 
 // Simple route to test the database connection and run a sample query

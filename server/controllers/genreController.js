@@ -1,5 +1,4 @@
 const Genre = require('../models/genre');
-const ProficiencyLevel = require("../models/ProficiencyLevel");
 
 /**
  * Get the genre by name.
@@ -42,7 +41,7 @@ const createGenre = async (req, res) => {
             return res.status(400).json({ message: 'Genre name is required' });
         }
 
-        // Call the createProficiencyLevel method from the ProficiencyLevel model
+        // Call the createGenre method from the Genre model
         await Genre.createGenre(name);
 
         return res.status(201).json({ message: 'Genre created successfully' });

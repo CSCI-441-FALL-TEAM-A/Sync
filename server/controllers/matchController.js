@@ -23,6 +23,12 @@ const getMatchById = async(req, res) => {
     }
 };
 
+/**
+ * Create a new match.
+ * @param {object} req - Express request object containing the match details in the body.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} Sends the newly created match record or an error message.
+ */
 const createMatch = async (req, res) => {
     try {
         const { user_id_one, user_id_two, status } = req.body;
@@ -48,6 +54,12 @@ const createMatch = async (req, res) => {
     }
 };
 
+/**
+ * Update an existing match.
+ * @param {object} req - Express request object containing the match id in params and the updates in the body.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} Sends the updated match record or an error message.
+ */
 const updateMatch = async (req, res) => {
     try {
         const { id } = req.params; //Match ID from the URL
@@ -66,6 +78,12 @@ const updateMatch = async (req, res) => {
     }
 };
 
+/**
+ * Soft delete a match by setting the deleted_at timestamp.
+ * @param {object} req - Express request object containing the match id in params.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} Sends a success message or an error message.
+ */
 const deleteMatch = async(req, res) => {
     try{
         const { id } = req.params;
