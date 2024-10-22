@@ -23,6 +23,7 @@ connectDB();
 app.use(express.json());
 
 // Middleware to serve static files from "public" folder
+//Ronnie PR?
 app.use(express.static('../public'));
 
 // Use the user type routes
