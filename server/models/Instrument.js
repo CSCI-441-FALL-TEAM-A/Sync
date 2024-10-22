@@ -31,6 +31,25 @@ const Instrument = {
         }
     },
 
+    async getInstrumentsByIds(instrumentIds) {
+        const query = `
+        SELECT id, name
+        FROM instruments
+        WHERE id = ANY($1::int[]);
+        `;
+
+        try {
+            const rows = await queryDB(query, [instrumentIds]);
+            // Convert the result into an object: {1: 'Guitar', 2: 'Piano'}
+            return rows.reduce((acc, instrument) => {
+                acc[instrument.id] = instrument.name;
+                return acc;
+            }, {});
+        } catch (error) {
+            console.error('Error fetching instruments:', error);
+            throw error;
+        }
+    },
     /**
      * Create a new instrument.
      * @param {string} name - The name of the instrument.
