@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Registration</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main">
+        <!-- Step 1: Email -->
+        <div class="form-step" id="step-1">
+            <div class="btn-prev-container">
+                <button type="button" class="btn prev" onclick="goToTitle()">Back</button>
+            </div>
+            <h2>What's your email?</h2>
+            <div class="inputs-containers email-inputs">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="btn-next-container">
+                <button type="button" class="btn next" onclick="nextStep(2)">></button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Birthday -->
+        <div class="form-step" id="step-2" style="display:none;">
+            <div class="btn-prev-container">
+                <button type="button" class="btn prev" onclick="prevStep(1)">Back</button>
+            </div>
+            <h2>When is your birthday?</h2>
+            <div class="inputs-containers birthday-inputs">
+                <input type="number" id="day" placeholder="DD" min="1" max="31" required>
+                <input type="number" id="month" placeholder="MM" min="1" max="12" required>
+                <input type="number" id="year" placeholder="YYYY" min="1900" max="2024" required>
+            </div>
+            <div class="btn-next-container">
+                <p>This cannot be changed later.</p>
+                <button type="button" class="btn next" onclick="nextStep(3)">></button>
+            </div>
+        </div>
+
+        <!-- Step 3: Name -->
+        <div class="form-step" id="step-3" style="display:none;">
+            <div class="btn-prev-container">
+                <button type="button" class="btn prev" onclick="prevStep(2)">Back</button>
+            </div>
+            <h2>What is your name?</h2>
+            <div class="inputs-containers name-inputs">
+                <input type="text" id="firstname" placeholder="First Name (Required)" required>
+                <input type="text" id="lastname" placeholder="Last Name">
+            </div>
+            <div class="btn-next-container">
+                <p class="info-text">This is your display name.</p>
+                <button type="button" class="btn next" onclick="nextStep(4)">></button>
+            </div>
+        </div>
+
+        <!-- Step 4: Password & Submit -->
+        <div class="form-step" id="step-4" style="display:none;">
+            <div class="btn-prev-container">
+                <button type="button" class="btn prev" onclick="prevStep(3)">Back</button>
+            </div>
+            <h2>Enter a password.</h2>
+            <div class="inputs-containers password-inputs">
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="confirm-password" placeholder="Confirm Password">
+            </div>
+            <button type="submit" class="btn main">Submit</button>
+        </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

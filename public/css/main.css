@@ -1,0 +1,311 @@
+/* || RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* || VARIABLES */
+:root {
+    --main-bg-color: white;
+    --gradient-bg-color: linear-gradient(180deg, #4169E1, #173387);
+    
+    --auth-heading-color: #101828;           /* Heading color for Login and SignIn*/
+
+    --main-heading-color: white;             /* Heading color for dark home pages*/
+    --secondary-heading-color: #101828;      /* Heading color for light home pages*/
+    
+    --main-font-color: #3D4D65 ; 
+
+    --form-placer-font-color: #858D9D;      /* Font color for placer text in forms*/
+    --form-font-color: #2B2F38;             /* Font color for user entered text in forms*/
+    --form-border-color: #3D4D65;           /* Border color for form options*/ 
+
+    --main-button-color: linear-gradient(90deg, #4169E1, #173387);
+    --main-button-hover-color: transparent;
+
+    --like-button-color: linear-gradient(180deg, #FFA8C2, #F97A7A);
+    --like-button-hover-color: transparent;
+
+    --dislike-button-color: linear-gradient(180deg, #4169E1, #173387);
+    --dislike-button-hover-color: transparent;
+
+    --badges-selected-color: #4169E1 ;          /* Background color for badges users selected (e.g. genres selected) */
+    --badges-selected-border-color: #173387;    /* Border color for badges users selected (e.g. genres selected) */
+    --badges-font-color: white;                 /* Font color for badges users selected (e.g. genres selected) */
+
+    --badges--color: transparent;                 /* Background color for badges users selected (e.g. genres selected) */
+    --badges-border-color: #D0D3D9 ;            /* Border color for badges (e.g. genre) */
+    --badges-font-color: #667085 ;              /* Font color for badges (e.g. genre) */
+} 
+
+/* || SITEWIDE */
+html{
+    font-family: "Manrope", sans-serif;
+}
+
+body {
+    background-color: var(--main-bg-color);
+    color: var(--main-font-color);
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    text-align: left;
+    max-height: 100vh;
+    overflow-x: hidden;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+a{
+    text-decoration: none;
+}
+
+p{
+    color: var(--main-font-color);
+}
+
+button{
+    font-family: "Manrope", sans-serif;
+}
+
+input::placeholder {
+    color: var(--form-placer-font-color);
+    font-size: 16px;
+}
+
+input{
+    font-size: 16px;
+    font-family: "Manrope", sans-serif;
+    color: var(--form-font-color);
+    outline: none;
+    border: none;
+    padding: 16px 0px;
+}
+
+.container {
+    width: 100%;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 10px auto;
+    border-radius: 99px;
+    transition: 0.3s ease;
+    font-size: 16px;
+    border: none;
+    transition: 0.3s ease;
+    border: none;
+}
+
+.btn.main{
+    background: var(--main-button-color);
+    color: white;
+}
+
+.btn-next-container{
+    width: 100%;    
+    position: relative;  
+    display: flex;      
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn.next{
+    margin-right: 0;
+    width: 50px;
+    height: 50px;
+    background: var(--main-button-color);
+    color: white;
+}
+
+.btn-prev-container{
+    width: 100%;    
+    position: relative;        
+}
+
+.btn.prev{
+    background: transparent;
+    color: #173387;
+    padding-left: 0px;
+    width: 50px;
+    height: 50px;
+    margin-left: 0;
+}
+
+
+
+/* || INDEX */
+.content{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 90px;
+    width: 100%;
+    max-width: 550px;
+    margin: auto;
+}
+
+.logo img{
+    height: 200px;
+}
+
+.dark-background{
+    background: var(--gradient-bg-color);
+}
+
+.buttons{
+    margin: 90px 0 20px 0;
+}
+
+.btn.create-account{
+    background-color: #f7becf;
+    color: #173387; 
+}
+
+.btn.create-account:hover{
+    background-color: #F97A7A;
+}
+
+.btn.sign-in{
+    border: 2px solid #f7becf;
+    color: #f7becf;
+    background-color: transparent;
+}
+
+.btn.sign-in:hover{
+    background-color: #F97A7A;
+    color: #173387; 
+    border-color: #F97A7A;
+}
+
+
+
+/* || REGISTER */
+.content-main{
+    height: 100vh;
+    width: 100%;
+    max-width: 550px;
+    margin: auto;
+}
+
+.form-step {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.form-step h2 {
+    font-size: 24px;
+    font-family: "Literata", serif;
+    color: var(--auth-heading-color);
+    font-weight: 600;
+}
+
+
+.inputs-containers{
+    margin-top: 35px;
+    margin-bottom: 52px;
+}
+
+.email-inputs{
+    width: 100%;
+}
+
+.birthday-inputs {
+    display: flex;
+    justify-content: space-around;
+}
+
+.email-inputs, .birthday-inputs{
+    border-top: 1px solid var(--form-border-color);
+    border-bottom: 1px solid var(--form-border-color);
+}
+
+.name-inputs, .password-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.birthday-inputs input {
+    width: 60px;
+    text-align: center;
+}
+
+.name-inputs input, .password-inputs input {
+    border-bottom: 1px solid var(--form-border-color);
+}
+
+.avatar {
+    height: 80px;
+    width: 80px;
+    border-radius: 100px;
+}
+
+/* || PROFILE */
+.profile-container {
+    height: 100vh;
+    width: 100%;
+    max-width: 550px;
+    margin: auto;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-buttons {
+    margin: 90px 0 20px 0;
+}
+
+.profile-logo img {
+    height: 200px;
+    margin: 20px 0;
+}
+
+.profile-btn {
+    background-color: #4169E1;
+    color: white;
+    padding: 14px 16px;
+    border-radius: 99px;
+    transition: 0.3s ease;
+    width: 100%;
+}
+
+.profile-btn:hover {
+    background-color: #173387;
+}
+
+.profile-pic-container {
+    margin-bottom: 15px;
+}
+
+.profile-pic-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold; /* Makes the label bold */
+}
+
+.profile-pic-container input[type="file"] {
+    padding: 5px; /* Padding for the file input */
+    border: 1px solid #ccc; /* Border for the file input */
+    border-radius: 5px; /* Rounded corners for the file input */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
