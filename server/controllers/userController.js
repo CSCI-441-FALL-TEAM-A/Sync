@@ -9,7 +9,6 @@ const Location = require("../models/Location");
  * @returns {Promise<void>} The function sends a response with the user details or an error message.
  */
 
-// TODO: Ronnie, nothing needs to return if it has a deleted at.
 const getUserById = async(req, res) => {
     try{
         const { id } = req.params;
