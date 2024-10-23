@@ -1,5 +1,8 @@
 const User = require('../models/User');
-const Location = require("../models/Location");
+const { queryDB, pool} = require('../config/database');
+const Profile = require("../models/Profile");
+const bcrypt = require("bcrypt");
+const UserResponse = require("../responses/UserResponse");
 
 
 /**
@@ -98,9 +101,68 @@ const deleteUser = async(req, res) => {
     }
 };
 
+/**
+ * Registers a new user and creates their profile.
+ * @param {object} req - The request object containing user information.
+ * @param {object} res - The response object to send back the result.
+ */
+const registerUser = async (req, res) => {
+    const client = await pool.connect(); // Start a client connection for a transaction
+
+    try {
+        const { email, password, first_name, last_name, birthday, user_type } = req.body;
+
+        // Validate required fields
+        if (!email || !password || !first_name || !last_name || !user_type) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Start a transaction
+        await client.query('BEGIN');
+
+        // Insert new user into the database using the specific client
+        const newUser = await User.createUserWithClient(client, {
+            email,
+            password: hashedPassword,
+            first_name,
+            last_name,
+            birthday,
+            user_type,
+        });
+
+        // Insert profile information for the new user using the same client
+        const newProfile = await Profile.createProfileWithClient(client, {
+            user_id: newUser.id,
+            gender: '',
+            instruments: [],
+            proficiency_level: 0,
+            genres: [],
+        });
+
+        // Commit the transaction
+        await client.query('COMMIT');
+
+        const userResponse = UserResponse(newUser, newProfile);
+
+        // Send a successful response with the created user and profile information
+        res.status(201).json(userResponse);
+    } catch (error) {
+        // Rollback in case of error
+        await client.query('ROLLBACK');
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Server error' });
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    registerUser
 }
