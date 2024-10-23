@@ -28,5 +28,6 @@ const queryDB = async (queryText, params) => {
 
 module.exports = {
     connectDB,
-    queryDB
+    queryDB,
+    pool,
 };

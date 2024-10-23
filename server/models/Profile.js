@@ -125,6 +125,35 @@ const Profile = {
             throw new Error('Failed to delete profile');
         }
     },
+
+    /**
+     * Create a new profile using a specific client in a transaction.
+     * @param {object} client - The database client to use for the transaction.
+     * @param {object} profileData - The profile data to insert.
+     * @param {number} profileData.user_id - The ID of the user.
+     * @param {string} profileData.gender - The gender of the user.
+     * @param {array} profileData.instruments - An array of instrument IDs.
+     * @param {number} profileData.proficiency_level - The proficiency level of the user.
+     * @param {array} profileData.genres - An array of genre IDs.
+     * @returns {object|null} The newly created profile record, or null if the insert failed.
+     * @throws Will throw an error if the insertion fails.
+     */
+    async createProfileWithClient(client, profileData) {
+        const { user_id, gender, instruments, proficiency_level, genres } = profileData;
+        const query = `
+        INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+        RETURNING *;
+        `;
+
+        try {
+            const result = await client.query(query, [user_id, gender, instruments, proficiency_level, genres]);
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error('Error creating profile with client:', error);
+            throw error;
+        }
+    },
 };
 
 module.exports = Profile;

@@ -169,6 +169,40 @@ const User = {
             throw new Error('Failed to delete user');
         }
     },
+
+    /**
+     * Create a new user using a specific client in a transaction.
+     * @param {object} client - The database client to use for the transaction.
+     * @param {object} userData - The user data to insert.
+     * @param {string} userData.email - The email of the user.
+     * @param {string} userData.password - The hashed password of the user.
+     * @param {string} userData.first_name - The first name of the user.
+     * @param {string} userData.last_name - The last name of the user.
+     * @param {Date} userData.birthday - The date of birth of the user.
+     * @param {int} userData.user_type - The user_type of the user.
+     * @returns {object|null} The created user record if successful, else null.
+     * @throws Will throw an error if there is an issue creating the user.
+     */
+    async createUserWithClient(client, userData) {
+        const { email, password, first_name, last_name, birthday, user_type } = userData;
+        const query = `
+      INSERT INTO users (email, password, first_name, last_name, birthdate, user_type, created_at, updated_at)
+      VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
+      RETURNING *;
+    `;
+
+        try {
+            const result = await client.query(query, [email, password, first_name, last_name, birthday, user_type]);
+            return result.rows[0]; // Return the first created user record
+        } catch (error) {
+            // Handle unique constraint violations (duplicate email)
+            if (error.code === '23505') {
+                throw new Error('A user with this email already exists.');
+            }
+            console.error('Error creating user with client:', error);
+            throw error; // Rethrow the error for the caller to handle
+        }
+    },
 };
 
 module.exports = User;
