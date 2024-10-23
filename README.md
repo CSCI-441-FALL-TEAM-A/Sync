@@ -405,9 +405,9 @@ Operations to manager users in the Sync system, including creating, reading, upd
 }'`<br/>
 -Successful Response: `{"id":"10","email":"newuser2@example.com","first_name":"John","last_name":"Doe","user_type":1,"created_at":"2024-10-24T01:33:51.669Z","updated_at":"2024-10-24T01:33:51.669Z","profile":{"id":"5","gender":"","instruments":[],"proficiency_level":0,"genres":[]}}%`<br/>
 
--EndPoint: /api//login/
+-EndPoint: /api/login/<br/>
 -Method:  `POST`<br/>
--Description: Login a user.
+-Description: Login a user.<br/>
 -Example Request: `curl -X POST http://localhost:3000/api/users/login \
 -H "Content-Type: application/json" \
 -d '{
