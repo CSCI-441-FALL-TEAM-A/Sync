@@ -1,7 +1,7 @@
 const Profile = require('../models/profile');
 const ProfileResponse = require("../responses/ProfileResponse");
-const Genre = require("../models/Genre");
-const ProficiencyLevel = require("../models/ProficiencyLevel");
+const Genre = require("../models/genre");  
+const ProficiencyLevel = require("../models/proficiencyLevel");  
 
 const getProfileById = async(req, res) => {
     try{
