@@ -23,6 +23,10 @@ connectDB();
 //Middleware to use express json.
 app.use(express.json());
 
+// Middleware to serve static files from "public" folder
+//Ronnie PR?
+app.use(express.static('../public'));
+
 // Use the user type routes
 app.use('/api/user-types', userTypeRoutes);
 
@@ -62,6 +66,12 @@ app.get('/test-db', async (req, res) => {
     res.status(500).send('Database connection failed');
   }
 });
+
+// Serve the main index.html file for the front-end
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

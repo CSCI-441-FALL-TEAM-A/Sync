@@ -13,6 +13,8 @@ To get started with the project, follow these steps:
    -`npm run dev`
 4. To run the server in production mode<br/>
    -`npm start`
+5. When working locally Sync is serving the html via express on local host:<br/>
+   -`http://localhost:3000/`
 
 ## Git flow
 
@@ -425,7 +427,7 @@ Operations to manager users in the Sync system, including creating, reading, upd
 `<br/>
 
 -EndPoint: /api/users/
--Method: PUT
+-Method: `PUT`<br/>
 -Description: Update a user.
 -Example Request: `curl -X PUT http://localhost:3000/api/users/2 \
 -H "Content-Type: application/json" \
@@ -437,10 +439,36 @@ Operations to manager users in the Sync system, including creating, reading, upd
 -Successful Response: `{"id":"2","email":"newemail2@example.com","password":"hashedpassword","first_name":"NewFirstName","last_name":"NewLastName","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:35:56.021Z","updated_at":"2024-10-20T01:39:58.550Z","deleted_at":null}`<br/>
 
 -EndPoint: /api/users/:id</br>
--Method: DELETE</br>
+-Method:  `DELETE`<br/>
 -Description: Soft delete a user by setting the deleted_at timestamp</br>
 -Example Request: `curl -X DELETE http://localhost:3000/api/users/3`</br>
 -Successful Response: `{ "message": "User id '3' successfully deleted." }`</br>
+
+-EndPoint: /api/register/
+-Method:  `POST`<br/>
+-Description: Register a user.
+-Example Request: `curl -X POST http://localhost:3000/api/users/register \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "newuser@example.com",
+  "password": "mysecurepassword",
+  "first_name": "John",
+  "last_name": "Doe",
+  "birthday": "1990-01-01",
+  "user_type": 1
+}'`<br/>
+-Successful Response: `{"id":"10","email":"newuser2@example.com","first_name":"John","last_name":"Doe","user_type":1,"created_at":"2024-10-24T01:33:51.669Z","updated_at":"2024-10-24T01:33:51.669Z","profile":{"id":"5","gender":"","instruments":[],"proficiency_level":0,"genres":[]}}%`<br/>
+
+-EndPoint: /api/login/<br/>
+-Method:  `POST`<br/>
+-Description: Login a user.<br/>
+-Example Request: `curl -X POST http://localhost:3000/api/users/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "testuser@example.com",
+  "password": "password123"
+}'`<br/>
+-Successful Response: `{"id":"11","email":"test+testington@sync.com","first_name":"Test","last_name":"TestingtonTheFirst","user_type":1,"created_at":"2024-10-24T02:00:46.943Z","updated_at":"2024-10-24T02:00:46.943Z","profile":null}`<br/>
 
 ## Profile Management<br/>
 Operations to manager profiles in the Sync system, including creating, reading, updating, and deleting profiles.<br/>
@@ -448,7 +476,7 @@ Operations to manager profiles in the Sync system, including creating, reading, 
    -Method: `GET`<br/>
    -Description: Gets the details of the profile by id.<br/>
    -Example Request: `curl http://localhost:3000/api/profiles/1`<br/>
-   -Successful Response: `{"id":"1","gender":"Male","instruments":[1],"proficiency_level":"Novice","genres":[{"id":1,"name":"Rock"}],"created_at":"2024-10-21T22:49:24.612Z","user_id":"4","first_name":"John","last_name":"Musican"}`<br/>
+   -Successful Response: `{"id":"1","gender":"Male","instruments":[{"id":1,"name":"Guitar"}],"proficiency_level":"Novice","genres":[{"id":1,"name":"Rock"}],"created_at":"2024-10-21T22:49:24.612Z","user_id":"4","first_name":"John","last_name":"Musican"}`<br/>
 
    -EndPoint: `/api/profiles/`<br/>
    -Method: `POST`<br/>

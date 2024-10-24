@@ -1,7 +1,12 @@
 const Profile = require('../models/profile');
 const ProfileResponse = require("../responses/ProfileResponse");
+
 const Genre = require("../models/genre");  
 const ProficiencyLevel = require("../models/proficiencyLevel");  
+const Genre = require("../models/Genre");
+const ProficiencyLevel = require("../models/ProficiencyLevel");
+const Instrument = require("../models/Instrument");
+
 
 const getProfileById = async(req, res) => {
     try{
@@ -19,6 +24,13 @@ const getProfileById = async(req, res) => {
         profile.genres = profile.genres.map(genreId => ({
             id: genreId,
             name: genreMapping[genreId] || 'Unknown'
+        }));
+
+        // Fetch the instrument names based on the instrument IDs in the profile
+        const instrumentMapping = await Instrument.getInstrumentsByIds(profile.instruments);
+        profile.instruments = profile.instruments.map(instrumentId => ({
+            id: instrumentId,
+            name: instrumentMapping[instrumentId] || 'Unknown'
         }));
 
         // Fetch the proficiency level name based on the profile's proficiency_level

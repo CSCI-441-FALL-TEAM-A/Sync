@@ -1,5 +1,5 @@
 const express = require('express');
-const {getUserById, createUser, updateUser, deleteUser} = require('../controllers/userController');
+const {getUserById, createUser, updateUser, deleteUser, loginUser} = require('../controllers/userController');
 const router = express.Router();
 
 //Route to get user by id
@@ -10,5 +10,8 @@ router.post('/', createUser);
 router.put('/:id', updateUser);
 //Route to soft delete user by id
 router.delete('/:id', deleteUser);
+
+
+router.post('/login', loginUser);
 
 module.exports = router;
