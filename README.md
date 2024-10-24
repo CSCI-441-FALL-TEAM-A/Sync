@@ -65,7 +65,7 @@ Operations to manage user types in the Sync system, including creating, reading,
 
    -Endpoint: `/api/user-types/id/:id`<br/>
    -Method: `GET`<br/>
-   -Description: Gets the details of the user type by name.<br/>
+   -Description: Gets the details of the user type by id.<br/>
    -Example Request: `curl http://localhost:3000/api/user-types/id/1`<br/>
    -Successful Response: `{
   "id": 1,
@@ -213,6 +213,60 @@ Operations to manage matches in the Sync system, including creating, reading, up
    -Example Request: `curl -X DELETE http://localhost:3000/api/matches/3`<br/>
    -Successful Response: `{
   "message": "Match id '3' successfully deleted."
+}`
+
+## Match Status Management<br/>
+
+Operations to manage match statuses in the Sync system, including creating, reading, updating, and deleting match statuses.<br/>
+   -Endpoint: `/api/match-statuses/name/:name`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the match status by name.<br/>
+   -Example Request: `curl http://localhost:3000/api/match-statuses/name/Unmatched`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Unmatched",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -Endpoint: `/api/match-statuses/id/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the match statuses by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/match-statuses/id/1`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Unmatched",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/match-statuses`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new match status.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/match-statuses \
+-H "Content-Type: application/json" \
+-d '{"name": "Testing"}'`<br/>
+   -Successful Response: `{
+  "message": "Match status Testing created successfully."
+}`<br/>
+
+   -EndPoint: `/api/user-types/:name`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a match status.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/match-statuses -H "Content-Type: application/json" -d '{"currentName": "Testing", "newName": "TesyingPutRequest"}'
+'`<br/>
+   -Successful Response: `{
+  "message": "Match status Testing updated to TestingPutRequest."
+}`
+
+   -EndPoint: `/api/match-statuses/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a match status by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/match-statuses/Testing`<br/>
+   -Successful Response: `{
+  "message": "Match status 'Testing' successfully deleted."
 }`
 
 ## Instrument Management<br/>
