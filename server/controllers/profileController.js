@@ -2,9 +2,7 @@ const Profile = require('../models/profile');
 const ProfileResponse = require("../responses/ProfileResponse");
 
 const Genre = require("../models/genre");  
-const ProficiencyLevel = require("../models/proficiencyLevel");  
-const Genre = require("../models/Genre");
-const ProficiencyLevel = require("../models/ProficiencyLevel");
+const ProficiencyLevel = require("../models/proficiencyLevel");
 const Instrument = require("../models/Instrument");
 
 
