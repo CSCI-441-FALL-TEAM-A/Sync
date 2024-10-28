@@ -2,6 +2,7 @@ const User = require('../models/User');
 const { queryDB, pool} = require('../config/database');
 const Profile = require("../models/Profile");
 const bcrypt = require("bcrypt");
+
 const UserResponse = require("../responses/UserResponse");
 
 
@@ -16,6 +17,29 @@ const getUserById = async(req, res) => {
     try{
         const { id } = req.params;
         const user = await User.get(id);
+
+        if(!user){
+            return res.status(404).json({ message: 'User not found'});
+        }
+
+        return res.status(200).json(user);
+    }catch(error){
+        console.log('Error fetch user:', error);
+        return res.status(500).json({ message: 'Internal server error'});
+    }
+};
+
+/**
+ * Get the user by email.
+ * @param {object} req - Express request object containing the user email in params.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} The function sends a response with the user details or an error message.
+ */
+
+const getUserByEmail = async(req, res) => {
+    try{
+        const { email } = req.params;
+        const user = await User.getUserByEmail(email);
 
         if(!user){
             return res.status(404).json({ message: 'User not found'});
@@ -101,6 +125,7 @@ const deleteUser = async(req, res) => {
     }
 };
 
+
 /**
  * Registers a new user and creates their profile.
  * @param {object} req - The request object containing user information.
@@ -159,10 +184,47 @@ const registerUser = async (req, res) => {
     }
 };
 
+const loginUser = async(req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        //Make sure to check if the required fields are there.
+        if (!email || !password){
+            return res.status(400).json({message: 'Email AND password required'});
+        }
+
+        const user = await User.getUserByEmail(email);
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        //Compare the user password to the stored password.
+        const passwordValid = await bcrypt.compare(password, user.password);
+
+        if (!passwordValid) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        //Send the user data back.
+        const userResponse = UserResponse(user);
+
+        //Send successful response back.
+        res.status(201).json(userResponse);
+
+
+    }catch (error){
+        console.log('Error logging in user:', error);
+        res.status(500).json({ message: 'Server error'});
+    }
+}
+
+
 module.exports = {
     getUserById,
     createUser,
     updateUser,
     deleteUser,
-    registerUser
+    registerUser,
+    loginUser,
+    getUserByEmail,
 }

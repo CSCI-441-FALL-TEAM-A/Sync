@@ -11,6 +11,7 @@ const userRoutes = require('./routes/users');
 const matchRoutes = require('./routes/Matches');
 const profileRoutes = require('./routes/profiles');
 const instrumentRoutes = require('./routes/Instruments');
+const matchStatusRoutes = require('./routes/matchStatus');
 
 
 const app = express();
@@ -50,6 +51,9 @@ app.use('/api/profiles', profileRoutes);
 
 // Use instrument routes
 app.use('/api/instruments', instrumentRoutes);
+
+// Use matchStatus routes
+app.use('/api/match-statuses', matchStatusRoutes);
 
 
 // Simple route to test the database connection and run a sample query

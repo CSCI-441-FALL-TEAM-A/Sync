@@ -65,7 +65,7 @@ Operations to manage user types in the Sync system, including creating, reading,
 
    -Endpoint: `/api/user-types/id/:id`<br/>
    -Method: `GET`<br/>
-   -Description: Gets the details of the user type by name.<br/>
+   -Description: Gets the details of the user type by id.<br/>
    -Example Request: `curl http://localhost:3000/api/user-types/id/1`<br/>
    -Successful Response: `{
   "id": 1,
@@ -213,6 +213,60 @@ Operations to manage matches in the Sync system, including creating, reading, up
    -Example Request: `curl -X DELETE http://localhost:3000/api/matches/3`<br/>
    -Successful Response: `{
   "message": "Match id '3' successfully deleted."
+}`
+
+## Match Status Management<br/>
+
+Operations to manage match statuses in the Sync system, including creating, reading, updating, and deleting match statuses.<br/>
+   -Endpoint: `/api/match-statuses/name/:name`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the match status by name.<br/>
+   -Example Request: `curl http://localhost:3000/api/match-statuses/name/Unmatched`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Unmatched",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -Endpoint: `/api/match-statuses/id/:id`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of the match statuses by id.<br/>
+   -Example Request: `curl http://localhost:3000/api/match-statuses/id/1`<br/>
+   -Successful Response: `{
+  "id": 1,
+  "name": "Unmatched",
+  "created_at": "2023-01-01T00:00:00.000Z",
+  "updated_at": "2023-01-01T00:00:00.000Z",
+  "deleted_at": null
+}`<br/>
+
+   -EndPoint: `/api/match-statuses`<br/>
+   -Method: `POST`<br/>
+   -Description: Posts a new match status.<br/>
+   -Example Request: `curl -X POST http://localhost:3000/api/match-statuses \
+-H "Content-Type: application/json" \
+-d '{"name": "Testing"}'`<br/>
+   -Successful Response: `{
+  "message": "Match status Testing created successfully."
+}`<br/>
+
+   -EndPoint: `/api/user-types/:name`<br/>
+   -Method: `PUT`<br/>
+   -Description: Update a match status.<br/>
+   -Example Request: `curl -X PUT http://localhost:3000/api/match-statuses -H "Content-Type: application/json" -d '{"currentName": "Testing", "newName": "TesyingPutRequest"}'
+'`<br/>
+   -Successful Response: `{
+  "message": "Match status Testing updated to TestingPutRequest."
+}`
+
+   -EndPoint: `/api/match-statuses/:name`<br/>
+   -Method: `DELETE`<br/>
+   -Description: Soft delete a match status by setting the deleted_at timestamp<br/>
+   -Example Request: `curl -X DELETE http://localhost:3000/api/match-statuses/Testing`<br/>
+   -Successful Response: `{
+  "message": "Match status 'Testing' successfully deleted."
 }`
 
 ## Instrument Management<br/>
@@ -373,7 +427,7 @@ Operations to manager users in the Sync system, including creating, reading, upd
 `<br/>
 
 -EndPoint: /api/users/
--Method: PUT
+-Method: `PUT`<br/>
 -Description: Update a user.
 -Example Request: `curl -X PUT http://localhost:3000/api/users/2 \
 -H "Content-Type: application/json" \
@@ -385,10 +439,36 @@ Operations to manager users in the Sync system, including creating, reading, upd
 -Successful Response: `{"id":"2","email":"newemail2@example.com","password":"hashedpassword","first_name":"NewFirstName","last_name":"NewLastName","birthdate":"1990-01-01T06:00:00.000Z","user_type":2,"created_at":"2024-10-19T00:35:56.021Z","updated_at":"2024-10-20T01:39:58.550Z","deleted_at":null}`<br/>
 
 -EndPoint: /api/users/:id</br>
--Method: DELETE</br>
+-Method:  `DELETE`<br/>
 -Description: Soft delete a user by setting the deleted_at timestamp</br>
 -Example Request: `curl -X DELETE http://localhost:3000/api/users/3`</br>
 -Successful Response: `{ "message": "User id '3' successfully deleted." }`</br>
+
+-EndPoint: /api/register/
+-Method:  `POST`<br/>
+-Description: Register a user.
+-Example Request: `curl -X POST http://localhost:3000/api/users/register \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "newuser@example.com",
+  "password": "mysecurepassword",
+  "first_name": "John",
+  "last_name": "Doe",
+  "birthday": "1990-01-01",
+  "user_type": 1
+}'`<br/>
+-Successful Response: `{"id":"10","email":"newuser2@example.com","first_name":"John","last_name":"Doe","user_type":1,"created_at":"2024-10-24T01:33:51.669Z","updated_at":"2024-10-24T01:33:51.669Z","profile":{"id":"5","gender":"","instruments":[],"proficiency_level":0,"genres":[]}}%`<br/>
+
+-EndPoint: /api/login/<br/>
+-Method:  `POST`<br/>
+-Description: Login a user.<br/>
+-Example Request: `curl -X POST http://localhost:3000/api/users/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "testuser@example.com",
+  "password": "password123"
+}'`<br/>
+-Successful Response: `{"id":"11","email":"test+testington@sync.com","first_name":"Test","last_name":"TestingtonTheFirst","user_type":1,"created_at":"2024-10-24T02:00:46.943Z","updated_at":"2024-10-24T02:00:46.943Z","profile":null}`<br/>
 
 ## Profile Management<br/>
 Operations to manager profiles in the Sync system, including creating, reading, updating, and deleting profiles.<br/>

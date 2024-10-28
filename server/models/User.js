@@ -39,6 +39,24 @@ const User = {
     },
 
     /**
+     * Get the user by email.
+     * @param {string} email - The email of the user.
+     * @returns {object|null} The user record if found, else null.
+     * @throws Will throw an error if an invalid email is provided.
+     */
+
+    async getUserByEmail(email){
+        try{
+            const query = 'SELECT * FROM users WHERE email = $1 LIMIT 1';
+            const result = await queryDB(query, [email]);
+            return result.length > 0 ? result[0] : null;
+        }catch (error){
+            console.error('Error fetching user by email:', email, error);
+            throw error;
+        }
+    },
+
+    /**
      * Create a new user.
      * @param {object} userData - The user data in object form to insert.
      * @param {string} userData.email - The email of the user.
@@ -79,31 +97,32 @@ const User = {
         }
     },
 
-    async updateProficiencyLevel(currentName, newName){
-        const sanitizedNewName = newName.trim();
-
-        if (!sanitizedNewName || !sanitizedNewName.match(/^[a-zA-Z]+$/)) {
-            throw new Error('Invalid proficiency level name. Only alphabetic characters are allowed.');
-        }
-
-        try {
-            const existingProficiencyLevel = await ProficiencyLevel.get(currentName);
-
-            if(!existingProficiencyLevel){
-                throw new Error('Proficiency Level not found');
-            }
-
-            const updateQuery = 'UPDATE proficiency_levels SET name = $1, updated_at = NOW() WHERE name = $2';
-            await queryDB(updateQuery, [sanitizedNewName, currentName]);
-
-            console.log(`Proficiency Level updated from ${currentName} to ${newName}`);
-        } catch (error){
-            // changed this console.error('Error updating proficiency level:', error);
-
-            // added throw
-            throw error;
-        }
-    },
+    //TODO Ronnie, why is this even in here?
+    // async updateProficiencyLevel(currentName, newName){
+    //     const sanitizedNewName = newName.trim();
+    //
+    //     if (!sanitizedNewName || !sanitizedNewName.match(/^[a-zA-Z]+$/)) {
+    //         throw new Error('Invalid proficiency level name. Only alphabetic characters are allowed.');
+    //     }
+    //
+    //     try {
+    //         const existingProficiencyLevel = await ProficiencyLevel.get(currentName);
+    //
+    //         if(!existingProficiencyLevel){
+    //             throw new Error('Proficiency Level not found');
+    //         }
+    //
+    //         const updateQuery = 'UPDATE proficiency_levels SET name = $1, updated_at = NOW() WHERE name = $2';
+    //         await queryDB(updateQuery, [sanitizedNewName, currentName]);
+    //
+    //         console.log(`Proficiency Level updated from ${currentName} to ${newName}`);
+    //     } catch (error){
+    //         // changed this console.error('Error updating proficiency level:', error);
+    //
+    //         // added throw
+    //         throw error;
+    //     }
+    // },
 
     /**
      * Update a user record by id.
