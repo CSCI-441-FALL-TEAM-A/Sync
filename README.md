@@ -377,6 +377,12 @@ Operations to manager genres in the Sync system, including creating, reading, up
    -Example Request: `curl -X GET http://localhost:3000/api/genres/name/Rock`<br/>
    -Successful Response: `{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null}`<br/>
 
+   -Endpoint: `/api/genres/`<br/>
+   -Method: `GET`<br/>
+   -Description: Gets the details of all the genres.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/genres/`<br/>
+   -Successful Response: `[{"id":"1","name":"Rock","created_at":"2024-10-17T02:34:31.092Z","updated_at":"2024-10-17T02:34:31.092Z","deleted_at":null},{"id":"2","name":"Country","created_at":"2024-10-17T02:34:45.034Z","updated_at":"2024-10-17T02:34:45.034Z","deleted_at":null},{"id":"3","name":"Rap","created_at":"2024-10-17T02:34:55.187Z","updated_at":"2024-10-17T02:34:55.187Z","deleted_at":null},{"id":"5","name":"Pop","created_at":"2024-10-18T01:14:43.774Z","updated_at":"2024-10-18T01:14:43.774Z","deleted_at":null}]`<br/>
+
    -Endpoint: `/api/genres/id/:id`<br/>
    -Method: `GET`<br/>
    -Description: Gets the details of the genre by name.<br/>
