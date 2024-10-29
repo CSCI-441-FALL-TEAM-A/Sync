@@ -4,7 +4,7 @@ const config = require('./config/config');  // App configuration
 
 // Routes
 const userTypeRoutes = require('./routes/userTypes');
-const locationRoutes = require('./routes/locations');
+const locationRoutes = require('./routes/Locations');
 const proficiencyLevelRoutes = require('./routes/proficiencyLevels');
 const genreRoutes = require('./routes/genres');
 const userRoutes = require('./routes/users');

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Profile Setup</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <script src="../../js/profileSetup.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main">
+            <form id="profile-setup-form" enctype="multipart/form-data">
+                
+                <!-- Step 1: Ready to setup -->
+                <div class="form-step" id="step-1">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev"></button>
+                    </div>
+                    <h2>Are you ready to set up your profile?</h2>
+                    <div class="auth-text-container">
+                        <p>Complete your profile so we can best find you matches.</p>
+                    </div>
+                    <div class="btn-next-container">
+                        <button type="button" class="btn main" onclick="nextStep(2)">I'm Ready!</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Gender Identification -->
+                <div class="form-step" id="step-2" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(1)">Back</button>
+                    </div>
+                    <h2>How do you identify?</h2>
+
+                    <div class="inputs-containers">
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option> 
+                            <option value="Female">Female</option> 
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(3)">></button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Are you a Musician or Groupie? -->
+                <div class="form-step" id="step-3" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(2)">Back</button>
+                    </div>
+                    <h2>Are you a Musician or Groupie?</h2>
+
+                    <div class="inputs-containers"> 
+                        <div class="role-selection">
+                            <label class="role-option">
+                                <input type="radio" name="role" value="Musician" required>
+                                <span>Musician</span>
+                                <span class="info-icon" data-info="A musician actively performs or creates music">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="role" value="Groupie">
+                                <span>Groupie</span>
+                                <span class="info-icon" data-info="A groupie is a music lover who does not play any instrument">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+                        </div>
+                        <p class="info-text" style="display: none;"></p>
+                    </div>
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(4)">></button>
+                    </div>
+                </div>                
+
+                <!-- Step 4: Skill Level (only for Musicians) -->
+                <div class="form-step" id="step-4" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(3)">Back</button>
+                    </div>
+                    <h2>What's your skill level?</h2>
+
+                    <div class="inputs-containers"> 
+                        <div class="role-selection">
+                            <label class="role-option">
+                                <input type="radio" name="skill_level" value="Novice" required>
+                                <span>Novice</span>
+                                <span class="info-icon" data-info="A Novice is...">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+
+                            <label class="role-option">
+                                <input type="radio" name="skill_level" value="Intermediate">
+                                <span>Intermediate</span>
+                                <span class="info-icon" data-info="An Intermediate is...">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+
+                            <label class="role-option">
+                                <input type="radio" name="skill_level" value="Advanced">
+                                <span>Advanced</span>
+                                <span class="info-icon" data-info="An Advanced is...">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+
+                            <label class="role-option">
+                                <input type="radio" name="skill_level" value="Pro">
+                                <span>Pro</span>
+                                <span class="info-icon" data-info="A Pro is...">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+                        </div>
+                        <p class="info-text" style="display: none;"></p> 
+                    </div>
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(5)">></button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Instruments (only for Musicians) -->
+                <div class="form-step" id="step-5" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(4)">Back</button>
+                    </div>
+                    <h2>What instruments do you play?</h2>
+
+                    <div class="inputs-containers"> 
+                        <div class="selected-badges" id="selected-instruments"></div>
+                        <div class="search-container">
+                            <span class="search-icon material-symbols-rounded">search</span>
+                            <input type="text" id="badge-search" placeholder="Search" oninput="filterInstruments()" />
+                        </div>
+                        <div class="badge-options" id="instruments-options"></div>
+                    </div>
+
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(6)">></button>
+                    </div>
+                </div>                
+                
+                <!-- Step 6: Who do you prefer? -->
+                <div class="form-step" id="step-6" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(5)">Back</button>
+                    </div>
+                    <h2>Who do you prefer?</h2>
+
+                    <div class="inputs-containers">
+                        <select id="preferred_gender" name="preferred_gender" required>
+                            <option value="">Select gender...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+
+                        <div class="role-selection bottom">
+                            <label class="role-option">
+                                <input type="radio" name="role" value="Musician" required>
+                                <span>Musician</span>
+                                <span class="info-icon" data-info="A musician actively performs or creates music">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="role" value="Groupie">
+                                <span>Groupie</span>
+                                <span class="info-icon" data-info="A groupie is a music lover who does not play any instrument">
+                                    <span class="material-symbols-rounded">help</span>
+                                </span>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="role" value="Groupie">
+                                <span>Perfer not to say</span>
+                            </label>
+                        </div>
+                        <p class="info-text" style="display: none;"></p>
+                    </div>
+                    
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(7)">></button>
+                    </div>
+                </div>
+
+                <!-- Step 7: Favorite Music Genres -->
+                <div class="form-step" id="step-7" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(6)">Back</button>
+                    </div>
+                    <h2>Select your favorite music genres</h2>
+                    <div class="auth-text-container">
+                        <p>Curate your Sync experience by selecting your favorite music genres.</p>
+                    </div>
+
+                    <div class="inputs-containers"> 
+                        <div class="selected-badges" id="selected-genres"></div>
+                        <div class="search-container">
+                            <span class="search-icon material-symbols-rounded">search</span>
+                            <input type="text" id="genre-search" placeholder="Search" oninput="filterGenres()" />
+                        </div>
+                        <div class="badge-options" id="genre-options"></div>
+                    </div>
+
+                    <div class="btn-next-container">
+                        <button type="button" class="btn next" onclick="nextStep(8)">></button>
+                    </div>
+                </div>
+
+
+                <!-- Step 8: Upload Profile Image & Submit -->
+                <div class="form-step" id="step-8" style="display:none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="prevStep(7)">Back</button>
+                    </div>
+                    <h2>Upload your profile image</h2>
+                    <div class="auth-text-container">
+                        <p>Users will see this image when they view your profile. Make sure its a good one!</p>
+                    </div>
+
+                    <div class="inputs-containers">
+                        <div class="upload-container" onclick="document.getElementById('profile_image').click()">
+                            <span class="upload-icon material-symbols-rounded">add_a_photo</span>
+                        </div>
+                        <input type="file" id="profile_image" style="display: none;" accept="image/*" onchange="previewImage(event)">
+                    </div>
+
+                    <button type="submit" class="btn main">Complete Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Home</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <script src="../js/home.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main"> 
+            <!-- Top Section: Logo and Filter -->
+            <div class="btn-prev-container top-bar">
+                <div class="logo main">
+                    <img src="../images/sync-logo-blue-full.png" alt="Sync Logo">
+                </div>
+                <span class="filter-icon material-symbols-rounded">tune</span>
+            </div>
+
+            <!-- Middle Section: Swiping User Profile Card -->
+            <!-- TEST DATA -->
+            <div class="user-card" id="user-card" onclick="showUserDetails()">
+                <div class="user-image" style="background-image: url('../images/test-user-img.jpeg');"></div> 
+                <div class="user-info">
+                    <h2 id="user-name">Johnathan Wright</h2>
+                    <p id="user-role">Musician</p>
+                    <div class="user-genres">
+                        <span class="card-badge">Rock</span>
+                        <span class="card-badge">Hip-Hop</span>
+                        <span class="card-badge">Classical</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-details-overlay" id="user-details-overlay">
+                <button class="back-button" onclick="hideUserDetails()">←</button>
+                <div class="detailed-content">
+                    <div class="detailed-image" style="background-image: url('../images/test-user-img.jpeg');"></div>
+                    <h2>Johnathan Wright</h2>
+                    <p class="role">Musician</p>
+                    <div class="section">
+                        <h3>About</h3>
+                        <p>Adventurous soul with a passion for exploring new places and trying exotic cuisines.</p>
+                    </div>
+                    <div class="section">
+                        <h3>Instruments</h3>
+                        <div class="badges">
+                            <span class="badge">Drums</span>
+                            <span class="badge">Gaming</span>
+                            <span class="badge">Gaming</span>
+                            <span class="badge">Gaming</span>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h3>Music Taste</h3>
+                        <div class="badges">
+                            <span class="badge">Rock</span>
+                            <span class="badge">Hip-Hop</span>
+                            <span class="badge">Folk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swipe Buttons -->
+            <div class="swipe-buttons-container">
+                <button class="btn dislike" onclick="swipeDislike()">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+                <button class="btn like" onclick="swipeLike()">
+                    <span class="material-symbols-rounded">favorite</span>
+                </button>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="bottom-nav-width">
+                    <a href="../html/home.html">
+                        <span class="nav-icon material-symbols-rounded fill active">home</span>
+                    </a>
+                    <a href="../html/matches.html">
+                        <span class="nav-icon material-symbols-rounded fill">music_note</span>
+                    </a>
+                    <a href="">
+                        <span class="nav-icon material-symbols-rounded fill">chat</span>
+                    </a>
+                    <a href="../html/profile/profile.html">
+                        <span class="nav-icon material-symbols-rounded fill">person</span>
+                    </a> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
