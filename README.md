@@ -284,6 +284,12 @@ Operations to manage instruments in the Sync system, including creating, reading
    "deleted_at": null
 }`<br/>
 
+   -Endpoint: `/api/instruments/`<br/> 
+   -Method: `GET`<br/>
+   -Description: Gets the details of the instrument by id.<br/>
+   -Example Request: `curl -X GET http://localhost:3000/api/instruments/`<br/>
+   -Successful Response: `[{"id":1,"name":"Guitar","created_at":"2024-10-22T06:27:04.666Z","updated_at":"2024-10-22T06:27:04.666Z","deleted_at":null},{"id":2,"name":"Trombone","created_at":"2024-10-22T06:36:50.376Z","updated_at":"2024-10-22T06:36:50.376Z","deleted_at":null},{"id":3,"name":"Flute","created_at":"2024-10-22T06:37:09.607Z","updated_at":"2024-10-22T06:37:09.607Z","deleted_at":null}]`<br/>
+
    -EndPoint: `/api/instruments/create`<br/>
    -Method: `POST`<br/>
    -Description: Posts a new instrument.<br/>
