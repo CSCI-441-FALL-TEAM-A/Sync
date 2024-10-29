@@ -1,4 +1,4 @@
-const Profile = require('../models/profile');
+const Profile = require('../models/Profile');
 const ProfileResponse = require("../responses/ProfileResponse");
 
 const Genre = require("../models/genre");  

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Profile</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <script src="../../js/profile.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main">
+            <div class="form-step" id="profile-page">
+                <!-- Profile Header with Image -->
+                <div class="profile-header">
+                    <div class="profile-pic-container">
+                        <img id="profile-picture" src="../../images/test-user-img.jpeg" alt="Profile Picture" class="profile-pic" />
+                    </div>
+                    <h2 id="user-name">User's Name</h2>
+                    <button class="btn edit-profile-btn" onclick="showPage('edit-profile-page')">Edit Profile</button>
+                </div>
+
+                <!-- Profile Options -->
+                <div class="profile-options">
+                    <button class="btn profile-option-btn" onclick="showPage('account-settings-page')">
+                        <span class="material-symbols-rounded">settings</span> Account Settings
+                    </button>
+                    <button class="btn profile-option-btn" onclick="logout()">
+                        <span class="material-symbols-rounded">logout</span> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Edit Profile Page -->
+            <div class="form-step" id="edit-profile-page" style="display: none;">
+                <div class="btn-prev-container">
+                    <button type="button" class="btn prev" onclick="showPage('profile-page')">Back</button>
+                </div>
+                <h2>Edit Profile</h2>
+                <div class="profile-header">
+                    <div class="profile-pic-container">
+                        <img id="profile-picture" src="../../images/test-user-img.jpeg" alt="Profile Picture" class="profile-pic" />
+                    </div>
+                </div>
+
+                <div class="edit-profile-container">
+                    <div class="edit-profile-section">
+                        <h4>Full Name</h4>
+                        <div class="inputs-containers edit-page">
+                            <input type="text" id="full-name" name="name" placeholder="User's Name Goes Here" required>
+                        </div>
+                    </div>
+                
+                    
+                    <div class="edit-profile-section">
+                        <h4>Bio</h4>
+                        <div class="inputs-containers edit-page">
+                            <textarea id="bio" name="bio" placeholder="User's Bio Goes Here" rows="3" maxlength="180" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="edit-profile-section">
+                        <h4>Gender</h4>
+                        <div class="inputs-containers">
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option> 
+                                <option value="Female">Female</option> 
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="edit-profile-section">
+                        <h4>Role</h4>
+                        <div class="inputs-containers">
+                            <select id="role" name="role" onchange="toggleInstrumentPage()" required>
+                                <option value="">Select Role</option>
+                                <option value="Musician">Musician</option>
+                                <option value="Groupie">Groupie</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                            <div class="inputs-containers" id="instrument-section" style="display: none;">
+                                <button type="button" class="btn profile-option-btn" onclick="showPage('edit-instruments-page')">Select Instruments</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-profile-section">
+                        <div class="inputs-containers">
+                            <button type="button" class="btn profile-option-btn" onclick="showPage('edit-genres-page')">Select Genres</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <button type="button" class="btn main" onclick="updateProfile()">Save Changes</button>
+            </div>
+
+
+            <!-- Edit Instruments Page -->
+            <div class="form-step" id="edit-instruments-page" style="display: none;">
+                <div class="btn-prev-container">
+                    <button type="button" class="btn prev" onclick="showPage('edit-profile-page')">Back</button>
+                </div>
+                <h2>What instruments do you play?</h2>
+
+                <div class="inputs-containers"> 
+                    <div class="selected-badges" id="selected-instruments"></div>
+                    <div class="search-container">
+                        <span class="search-icon material-symbols-rounded">search</span>
+                        <input type="text" id="badge-search" placeholder="Search" oninput="filterInstruments()" />
+                    </div>
+                    <div class="badge-options" id="instruments-options"></div>
+                </div>
+            </div>
+
+            <!-- Edit Genres Page -->
+            <div class="form-step" id="edit-genres-page" style="display: none;">
+                <div class="btn-prev-container">
+                    <button type="button" class="btn prev" onclick="showPage('edit-profile-page')">Back</button>
+                </div>
+                <h2>Select your favorite music genres</h2>
+                <div class="auth-text-container">
+                    <p>Curate your Sync experience by selecting your favorite music genres.</p>
+                </div>
+
+                <div class="inputs-containers"> 
+                    <div class="selected-badges" id="selected-genres"></div>
+                    <div class="search-container">
+                        <span class="search-icon material-symbols-rounded">search</span>
+                        <input type="text" id="genre-search" placeholder="Search" oninput="filterGenres()" />
+                    </div>
+                    <div class="badge-options" id="genre-options"></div>
+                </div>
+            </div>
+
+
+            <!-- Account Settings Page -->
+            <div class="form-step" id="account-settings-page" style="display: none;">
+                <div class="btn-prev-container">
+                    <button type="button" class="btn prev" onclick="showPage('profile-page')">Back</button>
+                </div>
+                <h2>Account Settings</h2>
+
+                
+                 <div class="account-settings-container">
+                    <!-- Contact Information Section -->
+                    <div class="account-setting-section">
+                        <h3>Contact Information</h3>
+                        <p>Stay connected! Share your preferred contact information, ensuring seamless communication.</p>
+                        
+                        <div class="input-groups-container">
+                            <div class="input-group">
+                                <span class="material-symbols-rounded">mail</span>
+                                <input type="email" id="email" placeholder="user email here" required>
+                            </div>
+        
+                            <div class="input-group">
+                                <span class="material-symbols-rounded">location_on</span>
+                                <input type="text" id="location" placeholder="use location here" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Change Password Section -->
+                    <div class="account-setting-section">
+                        <h3>Change Password</h3>
+                        <p>Your password must be at least 6 characters and should include a combination of numbers, letters, and special characters (!@#$%^&*).</p>
+    
+                        <div class="input-groups-container">
+                            <div class="input-group">
+                                <input type="password" id="current-password" placeholder="Current password" required>
+                            </div>
+        
+                            <div class="input-group">
+                                <input type="password" id="new-password" placeholder="New password" required>
+                            </div>
+        
+                            <div class="input-group">
+                                <input type="password" id="confirm-new-password" placeholder="Re-type new password" required>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                
+
+                <button type="button" class="btn main" onclick="updateSettings()">Save Changes</button>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="bottom-nav-width">
+                    <a href="../home.html">
+                        <span class="nav-icon material-symbols-rounded fill">home</span>
+                    </a>
+                    <a href="../matches.html">
+                        <span class="nav-icon material-symbols-rounded fill">music_note</span>
+                    </a>
+                    <a href="">
+                        <span class="nav-icon material-symbols-rounded fill">chat</span>
+                    </a>
+                    <a href="profile.html">
+                        <span class="nav-icon material-symbols-rounded fill active">person</span>
+                    </a> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

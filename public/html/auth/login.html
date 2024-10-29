@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Registration</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <script src="/js/login.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main">
+            <form id="login-form">
+                <!-- Sign in -->
+                <div class="form-step" id="step-1">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="goToTitle()">Back</button>
+                    </div>
+                    <h2>Welcome back!</h2> 
+                    <div class="inputs-containers double-inputs">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <input type="password" id="password" password="email" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn main">Sign In</button>
+                    <!-- <p class="forgot-password-link">
+                        <a href="javascript:void(0)" onclick="nextStep(2)">Forgot Password?</a>
+                    </p> -->
+                </div>
+                
+                <!-- Forgot password-->
+                <!-- <div class="form-step" id="step-2" style="display: none;">
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="showLogin()">Back to Login</button>
+                    </div>
+                    <h2>Forgot Password</h2>
+                    <p>Enter your email to reset your password.</p>
+                    <div class="inputs-containers single-input">
+                        <input type="email" id="reset-email" placeholder="Email" required>
+                    </div>
+                    <button type="button" class="btn main" onclick="resetPassword()">Send Reset Link</button>
+                </div> -->
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/loginScripts.js"></script>
+</body>
+</html>
