@@ -1,4 +1,5 @@
 const Genre = require('../models/genre');
+const Instrument = require("../models/Instrument");
 
 /**
  * Get the genre by name.
@@ -44,6 +45,16 @@ const getGenreById = async(req, res) => {
     } catch (error) {
         console.error('Error fetching genre:', error);
         return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const getAllGenres = async (req, res) => {
+    try {
+        const instruments = await Genre.getAllGenres();
+        res.status(200).json(instruments);
+    } catch (error) {
+        console.error('Error fetching all instruments:', error);
+        res.status(500).json({ message: 'Server error, unable to fetch instruments' });
     }
 };
 
@@ -120,6 +131,7 @@ const deleteGenre = async (req, res) => {
 
 module.exports = {
     getGenreByName,
+    getAllGenres,
     getGenreById,
     createGenre,
     updateGenre,

@@ -67,6 +67,22 @@ const Genre = {
         }
     },
 
+    async getAllGenres() {
+        try {
+            const query = `
+                SELECT id, name, created_at, updated_at, deleted_at
+                FROM genres
+                WHERE deleted_at IS NULL;  -- Ensure only active instruments are returned
+            `;
+            const result = await queryDB(query);
+
+            return result;
+        } catch (error) {
+            console.error('Error fetching all instruments:', error);
+            throw error;
+        }
+    },
+
     async createGenre(genreName) {
         // Basic sanitization
         const sanitizedGenreName = genreName.trim();
