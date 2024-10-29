@@ -31,6 +31,22 @@ const Instrument = {
         }
     },
 
+    async getAllInstruments() {
+        try {
+            const query = `
+                SELECT id, name, created_at, updated_at, deleted_at
+                FROM instruments
+                WHERE deleted_at IS NULL;  -- Ensure only active instruments are returned
+            `;
+            const result = await queryDB(query);
+
+            return result;
+        } catch (error) {
+            console.error('Error fetching all instruments:', error);
+            throw error;
+        }
+    },
+
     async getInstrumentsByIds(instrumentIds) {
         const query = `
         SELECT id, name

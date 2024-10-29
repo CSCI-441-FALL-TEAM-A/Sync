@@ -23,6 +23,16 @@ const getInstrumentById = async(req, res) => {
     }
 };
 
+const getAllInstruments = async (req, res) => {
+    try {
+        const instruments = await Instrument.getAllInstruments();
+        res.status(200).json(instruments);
+    } catch (error) {
+        console.error('Error fetching all instruments:', error);
+        res.status(500).json({ message: 'Server error, unable to fetch instruments' });
+    }
+};
+
 
 /**
  * Create a new instrument.
@@ -112,6 +122,7 @@ const deleteInstrument = async (req, res) => {
 
 module.exports = {
     getInstrumentById,
+    getAllInstruments,
     createInstrument,
     updateInstrument,
     deleteInstrument,
