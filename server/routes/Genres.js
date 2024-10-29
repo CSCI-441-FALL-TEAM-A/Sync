@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/name/:name', getGenreByName);
 //Route to get genre by id
 router.get('/id/:id', getGenreById);
-// Route to get all instruments
+// Route to get all genres
 router.get('/', getAllGenres);
 //Route to add genre by name
 router.post('/', createGenre);
