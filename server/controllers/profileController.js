@@ -43,6 +43,68 @@ const getProfileById = async(req, res) => {
     }
 };
 
+const getProfileByUserId = async (req, res) => {
+    try{
+        const { user_id } = req.params;
+        const profile = await Profile.getProfileByUserId(user_id);
+
+        if(!profile){
+            return res.status(404).json({ message: 'Profile not found'});
+        }
+
+        // Fetch the genre names based on the genre IDs in the profile
+        const genreMapping = await Genre.getGenresByIds(profile.genres);
+
+        // Map genre IDs to names in the profile
+        profile.genres = profile.genres.map(genreId => ({
+            id: genreId,
+            name: genreMapping[genreId] || 'Unknown'
+        }));
+
+        // Fetch the instrument names based on the instrument IDs in the profile
+        const instrumentMapping = await Instrument.getInstrumentsByIds(profile.instruments);
+        profile.instruments = profile.instruments.map(instrumentId => ({
+            id: instrumentId,
+            name: instrumentMapping[instrumentId] || 'Unknown'
+        }));
+
+        // Fetch the proficiency level name based on the profile's proficiency_level
+        profile.proficiency_level = await ProficiencyLevel.getProficiencyById(profile.proficiency_level);
+
+        const user_type = req?.user?.user_type;
+        const response = ProfileResponse(profile, user_type);
+        return res.status(200).json(response);
+    }catch(error){
+        console.log('Error fetch profile:', error);
+        return res.status(500).json({ message: 'Internal server error'});
+    }
+};
+
+const getAllProfiles = async (req, res) => {
+    try {
+        const profiles = await Profile.getAll();
+
+        // If no profiles found, return a 404
+        if (!profiles || profiles.length === 0) {
+            return res.status(404).json({ message: 'No profiles found' });
+        }
+
+        const formattedProfiles = profiles.map(profile => {
+            return {
+                ...profile,
+                genres: profile.genres || [],
+                instruments: profile.instruments || [],
+                proficiency_level: profile.proficiency_level
+            };
+        });
+
+        return res.status(200).json(formattedProfiles);
+    } catch (error) {
+        console.error('Error fetching all profiles:', error);
+        return res.status(500).json({ message: 'Server error, unable to fetch profiles' });
+    }
+};
+
 /**
  * Controller function to handle creating a profile.
  * @param {object} req - Express request object.
@@ -113,6 +175,8 @@ const deleteProfile = async(req, res) => {
 
 module.exports = {
     getProfileById,
+    getProfileByUserId,
+    getAllProfiles,
     createProfile,
     updateProfile,
     deleteProfile,

@@ -43,6 +43,45 @@ const Profile = {
         }
     },
 
+    async getProfileByUserId(user_id){
+        try{
+            const query = `
+        SELECT 
+            profiles.*,
+            users.first_name,
+            users.last_name
+        FROM profiles
+        JOIN users ON profiles.user_id = users.id
+        WHERE profiles.user_id = $1
+        LIMIT 1;
+        `;
+            const result = await queryDB(query, [user_id]);
+            return result.length > 0 ? result[0] : null;
+        }catch (error){
+            console.error('Error fetching profile by id:', user_id, error);
+            throw error;
+        }
+    },
+
+    async getAll() {
+        try {
+            const query = `
+                SELECT 
+                    profiles.*, 
+                    users.first_name, 
+                    users.last_name 
+                FROM profiles 
+                JOIN users ON profiles.user_id = users.id
+                WHERE profiles.deleted_at IS NULL;
+            `;
+            const result = await queryDB(query);
+            return result;
+        } catch (error) {
+            console.error('Error fetching all profiles:', error);
+            throw error;
+        }
+    },
+
     /**
      * Create a new profile.
      * @param {object} profileData - The profile data to insert.
