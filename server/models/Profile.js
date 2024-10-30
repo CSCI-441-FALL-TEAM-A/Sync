@@ -14,6 +14,7 @@ const { queryDB } = require('../config/database');
  * @property {Date} created_at - Timestamp when the user type was created.
  * @property {Date} updated_at - Timestamp when the user type was last updated.
  * @property {Date|null} deleted_at - Timestamp when the user type was deleted, or null if active.
+ * @property {text} bio - Biographical information of the user.
  */
 
 const Profile = {
@@ -90,20 +91,21 @@ const Profile = {
      * @param {array} profileData.instruments - An array of instrument IDs.
      * @param {number} profileData.proficiency_level - The proficiency level of the user.
      * @param {array} profileData.genres - An array of genre IDs.
+     * @param {text} bio - Biographical information of the user.
      * @returns {object|null} The newly created profile record, or null if the insert failed.
      * @throws Will throw an error if the insertion fails.
      */
     async create(profileData) {
-        const { user_id, gender, instruments, proficiency_level, genres } = profileData;
+        const { user_id, gender, instruments, proficiency_level, genres, bio } = profileData;
         const query = `
-        INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, created_at, updated_at)
-        VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+        INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, bio, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
         RETURNING *;
         `;
 
         try {
             // Execute the query and insert the new profile
-            const rows = await queryDB(query, [user_id, gender, instruments, proficiency_level, genres]);
+            const rows = await queryDB(query, [user_id, gender, instruments, proficiency_level, genres, bio]);
             return rows.length > 0 ? rows[0] : null;
         } catch (error) {
             console.error('Error creating profile:', error);
@@ -119,24 +121,26 @@ const Profile = {
      * @param {array} [updatedData.instruments] - The updated array of instruments.
      * @param {number} [updatedData.proficiency_level] - The updated proficiency level.
      * @param {array} [updatedData.genres] - The updated array of genres.
+     * @param {text} bio - Biographical information of the user.
      * @returns {object|null} The updated profile record if successful, or null if no profile was updated.
      * @throws Will throw an error if there is an issue updating the profile.
      */
     async update(profileId, updatedData) {
-        const { gender, instruments, proficiency_level, genres } = updatedData;
+        const { gender, instruments, proficiency_level, genres, bio } = updatedData;
         const query = `
         UPDATE profiles
         SET gender = COALESCE($1, gender),
             instruments = COALESCE($2, instruments),
             proficiency_level = COALESCE($3, proficiency_level),
             genres = COALESCE($4, genres),
+            bio = COALESCE($5, bio),
             updated_at = NOW()
-        WHERE id = $5
+        WHERE id = $6
         RETURNING *;
         `;
 
         try {
-            const rows = await queryDB(query, [gender, instruments, proficiency_level, genres, profileId]);
+            const rows = await queryDB(query, [gender, instruments, proficiency_level, genres, bio, profileId]);
             return rows.length > 0 ? rows[0] : null;  // Return the updated profile or null
         } catch (error) {
             console.error('Error updating profile:', error);
@@ -174,19 +178,20 @@ const Profile = {
      * @param {array} profileData.instruments - An array of instrument IDs.
      * @param {number} profileData.proficiency_level - The proficiency level of the user.
      * @param {array} profileData.genres - An array of genre IDs.
+     * @param {text} profileData.bio - Biographical info of the creator.
      * @returns {object|null} The newly created profile record, or null if the insert failed.
      * @throws Will throw an error if the insertion fails.
      */
     async createProfileWithClient(client, profileData) {
-        const { user_id, gender, instruments, proficiency_level, genres } = profileData;
+        const { user_id, gender, instruments, proficiency_level, genres, bio } = profileData;
         const query = `
-        INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, created_at, updated_at)
-        VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+        INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, bio, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6 NOW(), NOW())
         RETURNING *;
         `;
 
         try {
-            const result = await client.query(query, [user_id, gender, instruments, proficiency_level, genres]);
+            const result = await client.query(query, [user_id, gender, instruments, proficiency_level, genres, bio]);
             return result.rows[0] || null;
         } catch (error) {
             console.error('Error creating profile with client:', error);

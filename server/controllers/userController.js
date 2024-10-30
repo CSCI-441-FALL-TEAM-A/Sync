@@ -165,6 +165,7 @@ const registerUser = async (req, res) => {
             instruments: [],
             proficiency_level: 0,
             genres: [],
+            bio: null,
         });
 
         // Commit the transaction

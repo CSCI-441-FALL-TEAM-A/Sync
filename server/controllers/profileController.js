@@ -112,7 +112,7 @@ const getAllProfiles = async (req, res) => {
  */
 const createProfile = async (req, res) => {
     try {
-        const { user_id, gender, instruments, proficiency_level, genres } = req.body;
+        const { user_id, gender, instruments, proficiency_level, genres, bio } = req.body;
 
         // Call the Profile.create method to insert a new profile
         const newProfile = await Profile.create({
@@ -120,7 +120,8 @@ const createProfile = async (req, res) => {
             gender,
             instruments,
             proficiency_level,
-            genres
+            genres,
+            bio
         });
 
         if (newProfile) {
