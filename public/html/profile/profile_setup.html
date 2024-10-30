@@ -132,6 +132,8 @@
                     </div>
                 </div>
 
+                <!-- TODO: Mack handle requirement on Instrument selection if user selects Groupie -->
+
                 <!-- Step 5: Instruments (only for Musicians) -->
                 <div class="form-step" id="step-5" style="display:none;">
                     <div class="btn-prev-container">
@@ -170,24 +172,24 @@
 
                         <div class="role-selection bottom">
                             <label class="role-option">
-                                <input type="radio" name="role" value="Musician" required>
+                                <input type="radio" name="preferred_role" value="Musician" required>
                                 <span>Musician</span>
                                 <span class="info-icon" data-info="A musician actively performs or creates music">
                                     <span class="material-symbols-rounded">help</span>
                                 </span>
                             </label>
                             <label class="role-option">
-                                <input type="radio" name="role" value="Groupie">
+                                <input type="radio" name="preferred_role" value="Groupie">
                                 <span>Groupie</span>
                                 <span class="info-icon" data-info="A groupie is a music lover who does not play any instrument">
                                     <span class="material-symbols-rounded">help</span>
                                 </span>
                             </label>
                             <label class="role-option">
-                                <input type="radio" name="role" value="Groupie">
-                                <span>Perfer not to say</span>
+                                <input type="radio" name="preferred_role" value="Prefer not to say">
+                                <span>Prefer not to say</span>
                             </label>
-                        </div>
+                        </div>                        
                         <p class="info-text" style="display: none;"></p>
                     </div>
                     

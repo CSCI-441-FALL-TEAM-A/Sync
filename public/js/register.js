@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // Clear any existing user ID in local and session storage
+    sessionStorage.removeItem('userId');
+    localStorage.removeItem('userId');
+});
+
 // Get the form element
 const registrationForm = document.getElementById('registration-form');
 const passwordInput = document.getElementById('password');
@@ -31,7 +37,7 @@ async function handleRegistrationSubmit(event) {
         first_name: firstName,
         last_name: lastName,
         birthday: birthday.toISOString(),
-        user_type: 1 // Assuming 1 is a default user type in your system
+        user_type: 1
     };
 
     try {
@@ -46,8 +52,13 @@ async function handleRegistrationSubmit(event) {
 
         // Check the response from the server
         if (response.ok) {
+            // Registration successful, get user data and store userId
+            const result = await response.json();
+            sessionStorage.setItem('userId', result.id); // Save user ID for later
+            localStorage.setItem('userId', result.id);  // Store in localStorage as backup
+
+
             // Registration successful, redirect to profile setup page
-            console.log('Registration successful');
             window.location.href = '../profile/profile_setup.html';
         } else {
             // Get the error message from the server response

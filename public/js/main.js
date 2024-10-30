@@ -6,18 +6,19 @@ function nextStep(step) {
     if (form.id === 'registration-form' && step === 3 && !validateAge()) {
         return; // Stop if age validation fails
     }
-    
+
     // Validate visible inputs in the current step only
     const currentStep = document.getElementById('step-' + (step - 1));
-    const inputs = currentStep.querySelectorAll('input[required], select[required]');
+    const inputs = currentStep.querySelectorAll('input[required]:not([type="hidden"]), select[required]');
+
     for (let input of inputs) {
-        if (!input.checkValidity()) {
+        if (input.offsetParent !== null && !input.checkValidity()) {
             input.reportValidity();
-            return; // Stop if any input is invalid
+            return;
         }
     }
 
-    // Skip steps based on role selection in the profile setup form
+    // Skip steps based on role selection in profile setup form
     if (form.id === 'profile-setup-form' && currentStep.id === 'step-3') {  
         const roleInput = document.querySelector('input[name="role"]:checked');
         const role = roleInput ? roleInput.value : null;
@@ -27,13 +28,13 @@ function nextStep(step) {
         }
     }
 
-    // Hide all steps and display the specified step
     const steps = document.getElementsByClassName('form-step');
     for (let i = 0; i < steps.length; i++) {
         steps[i].style.display = 'none';
     }
     document.getElementById('step-' + step).style.display = 'block';
 }
+
 
 function prevStep(step) {
     const form = document.getElementById('registration-form') || document.getElementById('profile-setup-form');

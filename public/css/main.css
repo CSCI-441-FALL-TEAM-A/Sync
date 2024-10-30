@@ -820,3 +820,18 @@ textarea {
     border: none;
     color: var(--form-font-color);
 }
+
+.edit-instruments-button, .edit-genres-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: none;
+    border-top: 1px solid var(--form-border-color);
+    border-bottom: 1px solid var(--form-border-color);
+    background-color: transparent;
+    padding: 16px 0px;
+    font-size: 16px;
+    font-family: "Manrope", sans-serif;
+    color: var(--form-font-color);
+}
