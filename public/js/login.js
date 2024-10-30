@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // Clear any existing user ID in local and session storage
+    sessionStorage.removeItem('userId');
+    localStorage.removeItem('userId');
+});
+
 // Select the login form
 const loginForm = document.getElementById('login-form');
 
@@ -21,11 +27,21 @@ async function handleLoginFormSubmit(event) {
         if (response.ok) {
             const userData = await response.json();
             console.log('Login successful:', userData);
-            // Redirect user to home
-            window.location.href = '../home.html'; 
+
+            if (userData.id) {
+                // Store the userId in session storage for future reference
+                sessionStorage.setItem('userId', userData.id);
+                localStorage.setItem('userId', userData.id);  // Store in localStorage as backup
+            } else {
+                console.warn("User ID not found in response.");
+            }
+
+            // Redirect the user to the home page
+            window.location.href = '../home.html';
         } else {
+            // If login fails, handle the error and notify the user
             const errorData = await response.json();
-            alert(errorData.message); 
+            alert(errorData.message);
         }
     } catch (error) {
         console.error('Network error:', error);
@@ -38,4 +54,3 @@ loginForm.removeEventListener('submit', handleLoginFormSubmit);
 
 // Add the 'submit' event listener with the handler
 loginForm.addEventListener('submit', handleLoginFormSubmit);
-

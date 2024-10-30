@@ -1,100 +1,131 @@
-// Submit handler for profile setup form
+// Ensure userId is retrieved correctly on page load
+document.addEventListener("DOMContentLoaded", () => {
+    let userId = sessionStorage.getItem('userId') || localStorage.getItem('userId');
+    
+    if (!userId) {
+        console.error("Error: userId not found in sessionStorage or localStorage.");
+        alert("User not logged in. Please log in to set up your profile.");
+        window.location.href = "../login.html";
+        return;
+    } else {
+        sessionStorage.setItem('userId', userId);
+        localStorage.setItem('userId', userId);
+    }
+
+    // Attach form submission listener
+    document.getElementById('profile-setup-form').addEventListener('submit', handleProfileSetupSubmit);
+
+    // Fetch instruments and genres from the backend and display them
+    fetchInstruments();
+    fetchGenres();
+});
+
+// Helper function to fetch user type ID by role name
+async function getUserTypeIdByName(roleName) {
+    try {
+        const response = await fetch(`/api/user-types/name/${roleName}`);
+        if (!response.ok) throw new Error(`Failed to fetch user type for role: ${roleName}`);
+        
+        const userType = await response.json();
+        return userType.id; // Assuming the response contains the ID of the user type
+    } catch (error) {
+        console.error("Error fetching user type ID:", error);
+        return null;
+    }
+}
+
+
 async function handleProfileSetupSubmit(event) {
     event.preventDefault();
 
-    // Gather form data
-    const gender = document.getElementById('gender').value;
-    const role = document.querySelector('input[name="role"]:checked')?.value;
-    const skillLevel = document.querySelector('input[name="skill_level"]:checked')?.value;
-    const preferredGender = document.getElementById('preferred_gender').value;
-    const profileImage = document.getElementById('profile_image').files[0];
-
-    // Convert selected instruments and genres to arrays
-    const instruments = Array.from(selectedInstruments);
-    const genres = Array.from(selectedGenres);
-
-    // If the user selected "Groupie," ensure skill level and at least one instrument are not gathered for 
-
-
-    // Validate required selections
-    if (!gender || !role || !preferredGender || genres.length === 0) {
-        alert('Please complete all required selections: gender, role, preferred gender, and genres.');
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
+        console.error("Error: userId not found in sessionStorage.");
+        alert("User not logged in. Please log in to set up your profile.");
+        window.location.href = "../login.html";
         return;
     }
 
-    // If the user selected "Musician," ensure skill level and at least one instrument are selected
-    if (role === 'Musician' && (!skillLevel || instruments.length === 0)) {
-        alert('Please select your skill level and at least one instrument.');
-        return;
+    const roleName = document.querySelector('input[name="role"]:checked')?.value;
+    const proficiencyLevelName = document.querySelector('input[name="skill_level"]:checked')?.value;
+    let proficiencyLevelId = null;
+    let roleId = null;
+
+    // Fetch role ID by role name
+    if (roleName) {
+        roleId = await getUserTypeIdByName(roleName);
+        if (!roleId) {
+            alert("Invalid role selected. Please try again.");
+            return;
+        }
     }
 
-    // Prepare FormData for submission
-    const formData = new FormData();
-    formData.append('gender', gender);
-    formData.append('role', role);
-    formData.append('preferred_gender', preferredGender);
-    formData.append('genres', JSON.stringify(genres));
-
-    // Only add skill level and instruments if the user is a musician
-    if (role === 'Musician') {
-        formData.append('skill_level', skillLevel);
-        formData.append('instruments', JSON.stringify(instruments));
+    // Fetch proficiency level ID by name
+    if (proficiencyLevelName) {
+        try {
+            const response = await fetch(`/api/proficiency-levels/name/${proficiencyLevelName}`);
+            const proficiencyLevelData = await response.json();
+            if (response.ok) {
+                proficiencyLevelId = proficiencyLevelData.id;
+            } else {
+                console.error(`Error fetching proficiency level ID: ${proficiencyLevelData.message}`);
+                alert("Error fetching proficiency level. Please try again.");
+                return;
+            }
+        } catch (error) {
+            console.error("Error fetching proficiency level:", error);
+            alert("Error fetching proficiency level. Please try again.");
+            return;
+        }
     }
 
-    // Add profile image if available
-    if (profileImage) {
-        formData.append('profile_image', profileImage);
-    }
+    // Gather form data as JSON object
+    const data = {
+        user_id: userId,
+        gender: document.getElementById('gender').value,
+        user_type: roleId, // Use the role ID here
+        preferred_gender: document.getElementById('preferred_gender').value,
+        genres: Array.from(selectedGenres),
+        proficiency_level: roleName === 'Musician' ? proficiencyLevelId : null, // Only add if user is a Musician
+        instruments: roleName === 'Musician' ? Array.from(selectedInstruments) : null // Only add if user is a Musician
+    };
 
     try {
-        const response = await fetch('/api/profile/setup', {
+        const response = await fetch('/api/profiles', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
         });
 
-        if (response.ok) {
-            alert('Profile setup completed successfully!');
-            window.location.href = '../home.html';
-        } else {
-            const errorData = await response.json();
-            alert(`Error: ${errorData.message}`);
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Error: ${text}`);
         }
+
+        const responseData = await response.json();
+        alert('Profile setup completed successfully!');
+        window.location.href = '../home.html';
     } catch (error) {
         console.error('Submission failed:', error);
         alert('An error occurred. Please try again.');
     }
 }
 
-// Attach the form submission listener
-document.getElementById('profile-setup-form').addEventListener('submit', handleProfileSetupSubmit);
 
+// Fetch instruments from the backend and display them
+async function fetchInstruments() {
+    try {
+        const response = await fetch('/api/instruments');
+        const instruments = await response.json();
+        displayInstruments(instruments);
+    } catch (error) {
+        console.error('Error fetching instruments:', error);
+    }
+}
 
-// TODO: Make a getAllInstruments and getAllGenres in backend
-
-// document.addEventListener('DOMContentLoaded', async () => {
-//     // Fetch instruments from the backend
-//     const response = await fetch('/api/instruments');
-//     const instruments = await response.json();
-//     displayInstruments(instruments);
-// });
-document.addEventListener('DOMContentLoaded', async () => {
-    // Mock data for testing
-    const mockInstruments = [
-        { id: 1, name: 'Guitar' },
-        { id: 2, name: 'Drums' },
-        { id: 3, name: 'Piano' },
-        { id: 4, name: 'Flute' },
-        { id: 5, name: 'Violin' },
-        { id: 6, name: 'Saxophone' },
-        { id: 7, name: 'Bass' },
-        { id: 8, name: 'Trumpet' },
-        { id: 9, name: 'Cello' },
-        { id: 10, name: 'Harp' }
-    ];
-
-    displayInstruments(mockInstruments);
-});
-// Function to display instruments
+// Display instruments function
 function displayInstruments(instruments) {
     const instrumentOptionsContainer = document.getElementById('instruments-options');
     instrumentOptionsContainer.innerHTML = ''; // Clear existing options
@@ -110,6 +141,7 @@ function displayInstruments(instruments) {
         instrumentOptionsContainer.appendChild(option);
     });
 }
+
 // Handle instrument selection
 const selectedInstrumentsContainer = document.getElementById('selected-instruments');
 let selectedInstruments = new Set();
@@ -143,11 +175,13 @@ function addSelectedInstrumentTag(instrument) {
     tag.appendChild(removeIcon);
     selectedInstrumentsContainer.appendChild(tag);
 }
+
 // Remove instrument tag when deselected
 function removeSelectedInstrumentTag(instrumentId) {
     const tag = selectedInstrumentsContainer.querySelector(`[data-instrument-id="${instrumentId}"]`);
     if (tag) tag.remove();
 }
+
 // Filter instruments based on search input
 function filterInstruments() {
     const searchValue = document.getElementById('badge-search').value.toLowerCase();
@@ -163,32 +197,18 @@ function filterInstruments() {
     });
 }
 
+// Fetch genres from the backend and display them
+async function fetchGenres() {
+    try {
+        const response = await fetch('/api/genres');
+        const genres = await response.json();
+        displayGenres(genres);
+    } catch (error) {
+        console.error('Error fetching genres:', error);
+    }
+}
 
-
-// document.addEventListener('DOMContentLoaded', async () => {
-//     // Fetch genres from the backend
-//     const response = await fetch('/api/genres');
-//     const genres = await response.json();
-//     displayGenres(genres);
-// });
-document.addEventListener('DOMContentLoaded', () => {
-    // Dummy genres for testing
-    const dummyGenres = [
-        { id: 1, name: 'Rock' },
-        { id: 2, name: 'Jazz' },
-        { id: 3, name: 'Classical' },
-        { id: 4, name: 'Pop' },
-        { id: 5, name: 'Hip-Hop' },
-        { id: 6, name: 'Electronic' },
-        { id: 7, name: 'Country' },
-        { id: 8, name: 'Blues' },
-        { id: 9, name: 'Reggae' },
-        { id: 10, name: 'Latin' }
-    ];
-    
-    displayGenres(dummyGenres);
-});
-// Function to display genres
+// Display genres function
 function displayGenres(genres) {
     const genreOptionsContainer = document.getElementById('genre-options');
     genreOptionsContainer.innerHTML = ''; // Clear existing options
@@ -204,6 +224,7 @@ function displayGenres(genres) {
         genreOptionsContainer.appendChild(option);
     });
 }
+
 // Handle genre selection with limit
 const selectedGenresContainer = document.getElementById('selected-genres');
 let selectedGenres = new Set();
@@ -223,6 +244,7 @@ function toggleGenreSelection(option, genre) {
         alert('You can select up to 5 genres only.');
     }
 }
+
 // Add selected genre tag
 function addSelectedGenreTag(genre) {
     const tag = document.createElement('div');
@@ -240,11 +262,13 @@ function addSelectedGenreTag(genre) {
     tag.appendChild(removeIcon);
     selectedGenresContainer.appendChild(tag);
 }
+
 // Remove genre tag when deselected
 function removeSelectedGenreTag(genreId) {
     const tag = selectedGenresContainer.querySelector(`[data-genre-id="${genreId}"]`);
     if (tag) tag.remove();
 }
+
 // Filter genres based on search input
 function filterGenres() {
     const searchValue = document.getElementById('badge-search').value.toLowerCase();
@@ -256,38 +280,28 @@ function filterGenres() {
     });
 }
 
-
-
 // Display information about terms
 document.querySelectorAll('.info-icon').forEach(icon => {
     icon.addEventListener('mouseenter', (event) => {
         const infoText = event.currentTarget.getAttribute('data-info');
-        
-        // Find the closest .info-text element within the same section
         const section = event.currentTarget.closest('.form-step');
         const infoParagraph = section.querySelector('.info-text');
-        
         if (infoParagraph) {
             infoParagraph.textContent = infoText;
-            infoParagraph.style.display = 'block'; // Show the info text
+            infoParagraph.style.display = 'block';
         }
     });
     
     icon.addEventListener('mouseleave', (event) => {
-        // Hide the info text on mouse leave
         const section = event.currentTarget.closest('.form-step');
         const infoParagraph = section.querySelector('.info-text');
-        
         if (infoParagraph) {
             infoParagraph.style.display = 'none';
         }
     });
 });
 
-
-
-
-// Preview Images 
+// Preview Image Functionality
 function previewImage(event) {
     const file = event.target.files[0];
     if (file) {
@@ -302,4 +316,30 @@ function previewImage(event) {
     }
 }
 
+// Skill Level Requirement Handling for Musicians
+document.addEventListener("DOMContentLoaded", () => {
+    const mainRoleSelection = document.querySelectorAll('input[name="role"]');
+    const skillLevelRadios = document.querySelectorAll('input[name="skill_level"]');
+    const skillLevelSection = document.getElementById('step-4');
 
+    function updateSkillLevelRequirement() {
+        const musicianSelected = Array.from(mainRoleSelection).some(
+            radio => radio.checked && radio.value === "Musician"
+        );
+
+        skillLevelRadios.forEach(radio => {
+            if (musicianSelected) {
+                radio.setAttribute('required', 'required');
+            } else {
+                radio.removeAttribute('required');
+                skillLevelSection.style.display = 'none';
+            }
+        });
+    }
+
+    mainRoleSelection.forEach(radio => {
+        radio.addEventListener("change", updateSkillLevelRequirement);
+    });
+
+    updateSkillLevelRequirement();
+});

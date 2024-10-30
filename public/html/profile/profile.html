@@ -52,9 +52,16 @@
 
                 <div class="edit-profile-container">
                     <div class="edit-profile-section">
-                        <h4>Full Name</h4>
+                        <h4>First Name</h4>
                         <div class="inputs-containers edit-page">
-                            <input type="text" id="full-name" name="name" placeholder="User's Name Goes Here" required>
+                            <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                        </div>
+                    </div>
+
+                    <div class="edit-profile-section"> 
+                        <h4>Last Name</h4>
+                        <div class="inputs-containers edit-page">
+                            <input type="text" id="lastname" name="lastname" placeholder="Enter your last name">
                         </div>
                     </div>
                 
@@ -62,7 +69,7 @@
                     <div class="edit-profile-section">
                         <h4>Bio</h4>
                         <div class="inputs-containers edit-page">
-                            <textarea id="bio" name="bio" placeholder="User's Bio Goes Here" rows="3" maxlength="180" required></textarea>
+                            <textarea id="bio" name="bio" placeholder="Enter a short bio" rows="3" maxlength="180" required></textarea>
                         </div>
                     </div>
                     
@@ -85,17 +92,31 @@
                                 <option value="">Select Role</option>
                                 <option value="Musician">Musician</option>
                                 <option value="Groupie">Groupie</option>
-                                <option value="Prefer not to say">Prefer not to say</option>
                             </select>
-                            <div class="inputs-containers" id="instrument-section" style="display: none;">
-                                <button type="button" class="btn profile-option-btn" onclick="showPage('edit-instruments-page')">Select Instruments</button>
-                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TODO: Mack Add Proficiency Level 
+                        TODO: Mack Fix Instruments and Genres Updates
+                    -->
+
+                    <div id="instrument-section" style="display: none;">
+                        <h4>Instruments</h4>
+                        <div class="inputs-containers" >
+                            <button type="button" class="edit-instruments-button" onclick="showPage('edit-instruments-page')">
+                                <span id="instruments-button-text">Select Instruments</span>
+                                <span class="material-symbols-rounded">chevron_right</span>
+                            </button>
                         </div>
                     </div>
 
                     <div class="edit-profile-section">
+                        <h4>Perfered Genres</h4>
                         <div class="inputs-containers">
-                            <button type="button" class="btn profile-option-btn" onclick="showPage('edit-genres-page')">Select Genres</button>
+                            <button type="button" class="edit-genres-button" onclick="showPage('edit-genres-page')">
+                                <span id="genres-button-text">Select Genres</span>
+                                <span class="material-symbols-rounded">chevron_right</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -139,6 +160,7 @@
                     </div>
                     <div class="badge-options" id="genre-options"></div>
                 </div>
+                <button type="button" class="btn main" onclick="saveSelectedGenres()">Save Genres</button>
             </div>
 
 
@@ -154,23 +176,18 @@
                     <!-- Contact Information Section -->
                     <div class="account-setting-section">
                         <h3>Contact Information</h3>
-                        <p>Stay connected! Share your preferred contact information, ensuring seamless communication.</p>
+                        <p>Stay connected! Share your preferred contact information, ensuring seamless communication to the people you match with.</p>
                         
                         <div class="input-groups-container">
                             <div class="input-group">
                                 <span class="material-symbols-rounded">mail</span>
                                 <input type="email" id="email" placeholder="user email here" required>
                             </div>
-        
-                            <div class="input-group">
-                                <span class="material-symbols-rounded">location_on</span>
-                                <input type="text" id="location" placeholder="use location here" required>
-                            </div>
                         </div>
                     </div>
     
                     <!-- Change Password Section -->
-                    <div class="account-setting-section">
+                    <!-- <div class="account-setting-section">
                         <h3>Change Password</h3>
                         <p>Your password must be at least 6 characters and should include a combination of numbers, letters, and special characters (!@#$%^&*).</p>
     
@@ -187,7 +204,7 @@
                                 <input type="password" id="confirm-new-password" placeholder="Re-type new password" required>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                  </div>
                 
 
