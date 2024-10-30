@@ -4,13 +4,14 @@ const ProfileResponse = (profile, user_type = 'guest') => {
     const response = {
         id: profile.id,
         gender: profile.gender,
-        instruments: profile.instruments, //TODO: Ronnie, you need to get this back as [{1: "Guitar}]
+        instruments: profile.instruments,
         proficiency_level: profile.proficiency_level,
         genres: profile.genres,
         created_at: profile.created_at,
         user_id: profile.user_id,
         first_name: profile.first_name,
         last_name: profile.last_name,
+        bio: profile.bio,
     }
 
     return response;

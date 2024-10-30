@@ -24,6 +24,7 @@ const UserResponse = (user, profile = null) => {
             instruments: profile.instruments,
             proficiency_level: profile.proficiency_level,
             genres: profile.genres,
+            bio: profile.bio,
         } : null
     };
 };
