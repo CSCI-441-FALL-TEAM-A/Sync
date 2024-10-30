@@ -186,7 +186,7 @@ const Profile = {
         const { user_id, gender, instruments, proficiency_level, genres, bio } = profileData;
         const query = `
         INSERT INTO profiles (user_id, gender, instruments, proficiency_level, genres, bio, created_at, updated_at)
-        VALUES ($1, $2, $3, $4, $5, $6 NOW(), NOW())
+        VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
         RETURNING *;
         `;
 
