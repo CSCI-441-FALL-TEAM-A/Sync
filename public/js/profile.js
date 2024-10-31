@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     toggleInstrumentPage();
 });
 
+// Function to fetch user data by ID
 async function fetchUserData(userId) {
     try {
         // Fetch user information (includes user_type ID)
@@ -50,6 +51,7 @@ async function fetchRoleNameById(roleId) {
     }
 }
 
+// Function to fetch profile data with ID
 async function fetchProfileData(userId, roleName) {
     try {
         // Fetch profile information
@@ -60,12 +62,16 @@ async function fetchProfileData(userId, roleName) {
         sessionStorage.setItem('profileId', profile.id);
         profile.roleName = roleName; // Add role name to profile data
 
+        console.log(profile);
+
         populateProfileFields(profile); // Pass the profile with updated role name
     } catch (error) {
         console.error("Error fetching profile data:", error);
     }
 }
 
+
+// Function to display current profile information
 function populateProfileFields(profile) {
     const firstName = profile.first_name || '';
     const lastName = profile.last_name || '';
