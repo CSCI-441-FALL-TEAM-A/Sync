@@ -127,7 +127,7 @@ const ProficiencyLevel = {
             console.log(`Proficiency level '${name}' has been soft deleted.`);
             return { message: `Proficiency level '${name}' successfully deleted.` };
         } catch (error) {
-            console.error('Error soft deleting proficiency level:', error);
+            // console.error('Error soft deleting proficiency level:', error);
             throw new Error('Proficiency level not found');
         }
     },

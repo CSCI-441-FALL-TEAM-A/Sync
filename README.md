@@ -523,4 +523,16 @@ Operations to manager profiles in the Sync system, including creating, reading, 
    -Method: `DELETE`<br/>
    -Description: Soft delete a profile by setting the deleted_at timestamp<br/>
    -Example Request: `curl -X DELETE http://localhost:3000/api/profiles/2 `<br/>
-   -Successful Response: `{"message":"Profile id '2' successfully deleted."}`
+   -Successful Response: `{"message":"Profile id '2' successfully deleted."}`<br/>
+
+   ## Unit Testing<br/>
+
+   To run Unit Tests with Jest: 
+   -Install Jest: `npm install --save-dev jest`<br/>
+   -In terminal, type `npm test`<br/>
+   -Console in terminal will provide feedback based on:<br/>
+     - Number of Test Suites ran, number of Test Suites passed<br/>
+     - Number of Tests ran, number of Tests passed<br/>
+     - Length of Time testing took.<br/>
+
+
