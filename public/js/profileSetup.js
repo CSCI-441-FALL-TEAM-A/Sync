@@ -1,5 +1,5 @@
 // Ensure userId is retrieved correctly on page load
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     let userId = sessionStorage.getItem('userId') || localStorage.getItem('userId');
     
     if (!userId) {
@@ -8,17 +8,34 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../login.html";
         return;
     } else {
+        // Save userId in both session and local storage for persistence
         sessionStorage.setItem('userId', userId);
         localStorage.setItem('userId', userId);
+        
+        // Fetch and store the existing profile ID
+        await fetchAndStoreProfileId(userId);
     }
 
-    // Attach form submission listener
+    // Attach form submission listener to handle profile setup submissions
     document.getElementById('profile-setup-form').addEventListener('submit', handleProfileSetupSubmit);
 
-    // Fetch instruments and genres from the backend and display them
+    // Fetch and display instruments and genres available for selection
     fetchInstruments();
     fetchGenres();
 });
+
+// Fetch the existing profile ID and store it in sessionStorage
+async function fetchAndStoreProfileId(userId) {
+    try {
+        const response = await fetch(`/api/profiles/user/${userId}`);
+        if (!response.ok) throw new Error('Failed to fetch profile ID');
+        
+        const profile = await response.json();
+        sessionStorage.setItem('profileId', profile.id); // Store profile ID
+    } catch (error) {
+        console.error("Error fetching profile ID:", error);
+    }
+}
 
 // Helper function to fetch user type ID by role name
 async function getUserTypeIdByName(roleName) {
@@ -34,13 +51,15 @@ async function getUserTypeIdByName(roleName) {
     }
 }
 
-
+// Submit user profile set up 
 async function handleProfileSetupSubmit(event) {
     event.preventDefault();
 
     const userId = sessionStorage.getItem('userId');
-    if (!userId) {
-        console.error("Error: userId not found in sessionStorage.");
+    const profileId = sessionStorage.getItem('profileId'); // Retrieve profile ID
+
+    if (!userId || !profileId) {
+        console.error("Error: userId or profileId not found.");
         alert("User not logged in. Please log in to set up your profile.");
         window.location.href = "../login.html";
         return;
@@ -58,6 +77,7 @@ async function handleProfileSetupSubmit(event) {
             alert("Invalid role selected. Please try again.");
             return;
         }
+        console.log(`Selected role: ${roleName}, role ID: ${roleId}`); // Debugging line to check role ID
     }
 
     // Fetch proficiency level ID by name
@@ -66,7 +86,7 @@ async function handleProfileSetupSubmit(event) {
             const response = await fetch(`/api/proficiency-levels/name/${proficiencyLevelName}`);
             const proficiencyLevelData = await response.json();
             if (response.ok) {
-                proficiencyLevelId = proficiencyLevelData.id;
+                proficiencyLevelId = parseInt(proficiencyLevelData.id, 10);
             } else {
                 console.error(`Error fetching proficiency level ID: ${proficiencyLevelData.message}`);
                 alert("Error fetching proficiency level. Please try again.");
@@ -79,32 +99,54 @@ async function handleProfileSetupSubmit(event) {
         }
     }
 
-    // Gather form data as JSON object
-    const data = {
-        user_id: userId,
-        gender: document.getElementById('gender').value,
-        user_type: roleId, // Use the role ID here
+    // Format genres and instruments as integer arrays
+    const formattedGenres = Array.from(selectedGenres).map(id => parseInt(id, 10));
+    const formattedInstruments = Array.from(selectedInstruments).map(id => parseInt(id, 10));
+
+    // Prepare data for the `user` table update
+    const userData = {
+        user_type: roleId,
+    };
+
+    // Prepare data for the `profile` table update
+    const profileData = {
+        gender: document.getElementById('gender').value || null,
+        instruments: roleName === 'Musician' ? formattedInstruments : [],
+        proficiency_level: roleName === 'Musician' ? proficiencyLevelId : 0,
+        genres: formattedGenres,
+
         preferred_gender: document.getElementById('preferred_gender').value,
-        genres: Array.from(selectedGenres),
-        proficiency_level: roleName === 'Musician' ? proficiencyLevelId : null, // Only add if user is a Musician
-        instruments: roleName === 'Musician' ? Array.from(selectedInstruments) : null // Only add if user is a Musician
     };
 
     try {
-        const response = await fetch('/api/profiles', {
-            method: 'POST',
+        // Update the user record (for fields in the users table)
+        const userResponse = await fetch(`/api/users/${userId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(userData),
         });
 
-        if (!response.ok) {
-            const text = await response.text();
-            throw new Error(`Error: ${text}`);
+        if (!userResponse.ok) {
+            const text = await userResponse.text();
+            throw new Error(`User update failed: ${text}`);
         }
 
-        const responseData = await response.json();
+        // Update the profile record (for fields in the profiles table)
+        const profileResponse = await fetch(`/api/profiles/${profileId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(profileData),
+        });
+
+        if (!profileResponse.ok) {
+            const text = await profileResponse.text();
+            throw new Error(`Profile update failed: ${text}`);
+        }
+
         alert('Profile setup completed successfully!');
         window.location.href = '../home.html';
     } catch (error) {
