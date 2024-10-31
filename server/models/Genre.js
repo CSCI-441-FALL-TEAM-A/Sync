@@ -88,7 +88,7 @@ const Genre = {
             await queryDB(insertQuery, [sanitizedGenreName]);
 
         } catch (error) {
-            console.error('Error creating genre:', sanitizedGenreName);
+            // console.error('Error creating genre:', sanitizedGenreName);
             throw error;
         }
     },
@@ -112,7 +112,7 @@ const Genre = {
 
             console.log(`Genre updated from ${currentName} to ${newName}`);
         } catch (error){
-            console.error('Error updating proficiency level:', error);
+            // console.error('Error updating proficiency level:', error);
             throw error; // Make sure the error is thrown 
         }
     },
@@ -133,7 +133,7 @@ const Genre = {
             console.log(`Genre '${name}' has been soft deleted.`);
             return { message: `Genre '${name}' successfully deleted.` };
         } catch (error) {
-            console.error('Error soft deleting genre:', error);
+            // console.error('Error soft deleting genre:', error);
             throw new Error('Failed to delete genre');
         }
     },

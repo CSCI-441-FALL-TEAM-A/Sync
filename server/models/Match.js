@@ -62,7 +62,7 @@ const Match = {
             return result.length > 0 ? result[0] : null;
 
         } catch (error) {
-            console.error('Error creating match:', error);
+            // console.error('Error creating match:', error);
             throw error;
         }
     },
@@ -147,7 +147,7 @@ const Match = {
 
             return { message: `Match id '${id}' successfully deleted.` };
         } catch (error) {
-            console.error('Error deleting match:', error); 
+            // console.error('Error deleting match:', error); 
             throw new Error('Failed to delete match');
         }
     },

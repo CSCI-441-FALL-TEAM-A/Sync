@@ -83,7 +83,7 @@ const Instrument = {
 
             return result.length > 0 ? result[0] : null;
         } catch (error) {
-            console.error('Error creating instrument:', name, error);
+            // console.error('Error creating instrument:', name, error);
             throw error;
         }
     },

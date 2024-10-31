@@ -67,7 +67,7 @@ const Profile = {
             const rows = await queryDB(query, [user_id, gender, instruments, proficiency_level, genres]);
             return rows.length > 0 ? rows[0] : null;
         } catch (error) {
-            console.error('Error creating profile:', error);
+            // console.error('Error creating profile:', error);
             throw error;
         }
     },
