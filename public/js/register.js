@@ -1,19 +1,28 @@
+// ------------------ Page Initialization ------------------
+
 document.addEventListener("DOMContentLoaded", () => {
     // Clear any existing user ID in local and session storage
     sessionStorage.removeItem('userId');
     localStorage.removeItem('userId');
 });
 
-// Get the form element
+// ------------------ Element References ------------------
+
 const registrationForm = document.getElementById('registration-form');
 const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirm-password');
 
-// Define the submit handler function
+
+// ------------------ Form Submission Handler ------------------
+
+/**
+ * Handle registration form submission
+ * @param {Event} event - Form submission event
+ */
 async function handleRegistrationSubmit(event) {
     event.preventDefault(); // Prevent the default form submission
 
-    // Gather form data
+    // Gather form data for registration payload
     const email = document.getElementById('email').value;
     const day = document.getElementById('day').value;
     const month = document.getElementById('month').value;
@@ -52,13 +61,10 @@ async function handleRegistrationSubmit(event) {
 
         // Check the response from the server
         if (response.ok) {
-            // Registration successful, get user data and store userId
+            // Successful registration, store userId and redirect to profile setup
             const result = await response.json();
-            sessionStorage.setItem('userId', result.id); // Save user ID for later
-            localStorage.setItem('userId', result.id);  // Store in localStorage as backup
-
-
-            // Registration successful, redirect to profile setup page
+            sessionStorage.setItem('userId', result.id); 
+            localStorage.setItem('userId', result.id);  
             window.location.href = '../profile/profile_setup.html';
         } else {
             // Get the error message from the server response
@@ -78,6 +84,8 @@ async function handleRegistrationSubmit(event) {
     }
 }
 
+// ------------------ Event Listener Management ------------------
+
 // Remove any existing 'submit' listener to prevent duplicates
 registrationForm.removeEventListener('submit', handleRegistrationSubmit);
 
@@ -85,8 +93,11 @@ registrationForm.removeEventListener('submit', handleRegistrationSubmit);
 registrationForm.addEventListener('submit', handleRegistrationSubmit);
 
 
+// ------------------ Real-Time Password Matching Feedback ------------------
 
-// Real-time password matching feedback
+/**
+ * Provide real-time feedback for password matching
+ */
 confirmPasswordInput.addEventListener('input', () => {
     const matchMessage = document.getElementById('match-message') || createMatchMessage();
 
@@ -98,7 +109,11 @@ confirmPasswordInput.addEventListener('input', () => {
         matchMessage.style.color = 'red';
     }
 });
-// Helper to create a match message element if not already present
+
+/**
+ * Create a password match message element if not already present
+ * @returns {HTMLElement} - Match message element
+ */
 function createMatchMessage() {
     const matchMessage = document.createElement('p');
     matchMessage.id = 'match-message';

@@ -1,27 +1,37 @@
+// ------------------ Page Initialization ------------------
+
 document.addEventListener("DOMContentLoaded", () => {
     // Clear any existing user ID in local and session storage
     sessionStorage.removeItem('userId');
     localStorage.removeItem('userId');
 });
 
+// ------------------ Element References ------------------
+
 // Select the login form
 const loginForm = document.getElementById('login-form');
 
-// Define the submit handler function
+// ------------------ Login Submission Handler ------------------
+
+/**
+ * Handle the login form submission event, authenticate the user, and manage login response.
+ * @param {Event} event - The form submit event
+ */
 async function handleLoginFormSubmit(event) {
     event.preventDefault();
 
-    // Gather form data
+    // Gather login credentials from the form
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
+        // Send login request to the server
         const response = await fetch('/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password }), // Send email and password as JSON
         });
 
         if (response.ok) {
@@ -36,7 +46,7 @@ async function handleLoginFormSubmit(event) {
                 console.warn("User ID not found in response.");
             }
 
-            // Redirect the user to the home page
+            // Redirect to the home page upon successful login
             window.location.href = '../home.html';
         } else {
             // If login fails, handle the error and notify the user
@@ -49,8 +59,10 @@ async function handleLoginFormSubmit(event) {
     }
 }
 
-// Remove any existing 'submit' listener on the login form
+// ------------------ Event Listener Management ------------------
+
+// Remove any existing 'submit' listener to prevent duplicates
 loginForm.removeEventListener('submit', handleLoginFormSubmit);
 
-// Add the 'submit' event listener with the handler
+// Attach the 'submit' event listener to form
 loginForm.addEventListener('submit', handleLoginFormSubmit);
