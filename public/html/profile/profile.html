@@ -21,7 +21,7 @@
                 <!-- Profile Header with Image -->
                 <div class="profile-header">
                     <div class="profile-pic-container">
-                        <img id="profile-picture" src="../../images/test-user-img.jpeg" alt="Profile Picture" class="profile-pic" />
+                        <img id="profile-picture" src="../../images/default_avatar.jpg" alt="Profile Picture" class="profile-pic" />
                     </div>
                     <h2 id="user-name">User's Name</h2>
                     <button class="btn edit-profile-btn" onclick="showPage('edit-profile-page')">Edit Profile</button>
@@ -46,7 +46,7 @@
                 <h2>Edit Profile</h2>
                 <div class="profile-header">
                     <div class="profile-pic-container">
-                        <img id="profile-picture" src="../../images/test-user-img.jpeg" alt="Profile Picture" class="profile-pic" />
+                        <img id="profile-picture" src="../../images/default_avatar.jpg" alt="Profile Picture" class="profile-pic" />
                     </div>
                 </div>
 
@@ -80,15 +80,14 @@
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option> 
                                 <option value="Female">Female</option> 
-                                <option value="Prefer not to say">Prefer not to say</option>
                             </select>
                         </div>
                     </div>
                     
                     <div class="edit-profile-section">
-                        <h4>Role</h4>
+                        <h4>I am a...</h4>
                         <div class="inputs-containers">
-                            <select id="role" name="role" onchange="toggleInstrumentPage()" required>
+                            <select id="role" name="role" onchange="toggleMusicianPages()" required>
                                 <option value="">Select Role</option>
                                 <option value="Musician">Musician</option>
                                 <option value="Groupie">Groupie</option>
@@ -96,71 +95,45 @@
                         </div>
                     </div>
                     
-                    <!-- TODO: Mack Add Proficiency Level 
-                        TODO: Mack Fix Instruments and Genres Updates
-                    -->
+                    <div id="proficiency-section" style="display: none;">
+                        <h4>My Skill Level</h4>
+                        <div class="inputs-containers">
+                            <select id="proficiency-level" name="proficiency-level" required>
+                                <option value="">Select Skill Level</option>
+                                <option value="Novice">Novice</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Pro">Pro</option>
+                            </select>
+                        </div>
+                    </div>                    
 
                     <div id="instrument-section" style="display: none;">
-                        <h4>Instruments</h4>
-                        <div class="inputs-containers" >
-                            <button type="button" class="edit-instruments-button" onclick="showPage('edit-instruments-page')">
-                                <span id="instruments-button-text">Select Instruments</span>
-                                <span class="material-symbols-rounded">chevron_right</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="edit-profile-section">
-                        <h4>Perfered Genres</h4>
+                        <h4>Instruments I can play</h4>
                         <div class="inputs-containers">
-                            <button type="button" class="edit-genres-button" onclick="showPage('edit-genres-page')">
-                                <span id="genres-button-text">Select Genres</span>
-                                <span class="material-symbols-rounded">chevron_right</span>
-                            </button>
+                            <div class="selected-badges" id="selected-instruments"></div>
+                            <div class="search-container">
+                                <span class="search-icon material-symbols-rounded">search</span>
+                                <input type="text" id="instrument-search" placeholder="Search Instruments" oninput="filterInstruments()" />
+                            </div>
+                            <div class="badge-options" id="instruments-options"></div>
                         </div>
                     </div>
+                    
+                    <div class="edit-profile-section">
+                        <h4>Preferred Genres</h4>
+                        <div class="inputs-containers">
+                            <div class="selected-badges" id="selected-genres"></div>
+                            <div class="search-container">
+                                <span class="search-icon material-symbols-rounded">search</span>
+                                <input type="text" id="genre-search" placeholder="Search Genres" oninput="filterGenres()" />
+                            </div>
+                            <div class="badge-options" id="genre-options"></div>
+                        </div>
+                    </div>                    
                 </div>
             
                 <button type="button" class="btn main" onclick="updateProfile()">Save Changes</button>
-            </div>
-
-
-            <!-- Edit Instruments Page -->
-            <div class="form-step" id="edit-instruments-page" style="display: none;">
-                <div class="btn-prev-container">
-                    <button type="button" class="btn prev" onclick="showPage('edit-profile-page')">Back</button>
-                </div>
-                <h2>What instruments do you play?</h2>
-
-                <div class="inputs-containers"> 
-                    <div class="selected-badges" id="selected-instruments"></div>
-                    <div class="search-container">
-                        <span class="search-icon material-symbols-rounded">search</span>
-                        <input type="text" id="badge-search" placeholder="Search" oninput="filterInstruments()" />
-                    </div>
-                    <div class="badge-options" id="instruments-options"></div>
-                </div>
-            </div>
-
-            <!-- Edit Genres Page -->
-            <div class="form-step" id="edit-genres-page" style="display: none;">
-                <div class="btn-prev-container">
-                    <button type="button" class="btn prev" onclick="showPage('edit-profile-page')">Back</button>
-                </div>
-                <h2>Select your favorite music genres</h2>
-                <div class="auth-text-container">
-                    <p>Curate your Sync experience by selecting your favorite music genres.</p>
-                </div>
-
-                <div class="inputs-containers"> 
-                    <div class="selected-badges" id="selected-genres"></div>
-                    <div class="search-container">
-                        <span class="search-icon material-symbols-rounded">search</span>
-                        <input type="text" id="genre-search" placeholder="Search" oninput="filterGenres()" />
-                    </div>
-                    <div class="badge-options" id="genre-options"></div>
-                </div>
-                <button type="button" class="btn main" onclick="saveSelectedGenres()">Save Genres</button>
             </div>
 
 

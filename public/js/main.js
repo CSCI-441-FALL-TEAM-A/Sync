@@ -1,4 +1,9 @@
-// Switch between form steps
+// ------------------ Step Navigation ------------------
+
+/**
+ * Navigate to the next form step, with validations for age and role selection.
+ * @param {number} step - The step number to navigate to
+ */
 function nextStep(step) {
     const form = document.getElementById('registration-form') || document.getElementById('profile-setup-form');
 
@@ -28,6 +33,7 @@ function nextStep(step) {
         }
     }
 
+    // Hide all steps and display the specified step
     const steps = document.getElementsByClassName('form-step');
     for (let i = 0; i < steps.length; i++) {
         steps[i].style.display = 'none';
@@ -35,7 +41,10 @@ function nextStep(step) {
     document.getElementById('step-' + step).style.display = 'block';
 }
 
-
+/**
+ * Navigate to the previous form step, with conditional steps based on role selection.
+ * @param {number} step - The step number to navigate to
+ */
 function prevStep(step) {
     const form = document.getElementById('registration-form') || document.getElementById('profile-setup-form');
     const roleInput = document.querySelector('input[name="role"]:checked');
@@ -44,7 +53,7 @@ function prevStep(step) {
     // Handle going back correctly based on role selection in profile setup
     if (form.id === 'profile-setup-form') {
         if (step === 5 && role === "Groupie") {
-            step = 3;
+            step = 3; // Skip back to step 3 if Groupie is selected
         }
     }
 
@@ -56,15 +65,22 @@ function prevStep(step) {
     document.getElementById('step-' + step).style.display = 'block';
 }
 
-// Redirect to the title screen with login and create account options
+
+// ------------------ Redirection ------------------
+
+/**
+ * Redirect the user to the title screen with login and account options.
+ */
 function goToTitle() {
     window.location.href = '../../index.html'; 
 }
 
+// ------------------ Age Validation ------------------
 
-
-
-// Age validation function
+/**
+ * Validate if the user's age is 18 or older based on the selected birth date.
+ * @returns {boolean} - True if user is old enough, false otherwise
+ */
 function validateAge() {
     const day = parseInt(document.getElementById('day').value);
     const month = parseInt(document.getElementById('month').value) - 1;
@@ -79,7 +95,13 @@ function validateAge() {
     }
     return true;
 }
-// Helper function to check if the user is old enough (18+)
+
+/**
+ * Helper function to check if the user meets the minimum age requirement.
+ * @param {Date} birthday - User's birth date
+ * @param {number} ageLimit - Minimum required age
+ * @returns {boolean} - True if user is old enough, false otherwise
+ */
 function isOldEnough(birthday, ageLimit) {
     const today = new Date();
     let age = today.getFullYear() - birthday.getFullYear();

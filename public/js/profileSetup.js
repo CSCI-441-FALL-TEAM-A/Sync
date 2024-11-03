@@ -1,5 +1,8 @@
-// Ensure userId is retrieved correctly on page load
+// ------------------ Page Initialization ------------------
+
+// Ensure userId is retrieved correctly on page load, and initialize profile setup
 document.addEventListener("DOMContentLoaded", async () => {
+    // Retrieve userId from storage
     let userId = sessionStorage.getItem('userId') || localStorage.getItem('userId');
     
     if (!userId) {
@@ -22,9 +25,64 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch and display instruments and genres available for selection
     fetchInstruments();
     fetchGenres();
+
+    // Initialize skill level requirement handling for musicians
+    const mainRoleSelection = document.querySelectorAll('input[name="role"]');
+    const skillLevelRadios = document.querySelectorAll('input[name="skill_level"]');
+    const skillLevelSection = document.getElementById('step-4');
+
+    /**
+     * Update skill level requirement based on selected role
+     */
+    function updateSkillLevelRequirement() {
+        const musicianSelected = Array.from(mainRoleSelection).some(
+            radio => radio.checked && radio.value === "Musician"
+        );
+
+        skillLevelRadios.forEach(radio => {
+            if (musicianSelected) {
+                radio.setAttribute('required', 'required');
+            } else {
+                radio.removeAttribute('required');
+                skillLevelSection.style.display = 'none';
+            }
+        });
+    }
+
+    // Add event listeners to role selection to trigger skill level requirement update
+    mainRoleSelection.forEach(radio => {
+        radio.addEventListener("change", () => updateSkillLevelRequirement(mainRoleSelection, skillLevelRadios, skillLevelSection));
+    });
+
+    updateSkillLevelRequirement(mainRoleSelection, skillLevelRadios, skillLevelSection); // Initialize on page load
 });
 
-// Fetch the existing profile ID and store it in sessionStorage
+/**
+ * Update skill level requirement based on selected role
+ * @param {NodeList} mainRoleSelection - NodeList of role selection radio inputs
+ * @param {NodeList} skillLevelRadios - NodeList of skill level radio inputs
+ * @param {HTMLElement} skillLevelSection - The skill level section element to toggle
+ */
+function updateSkillLevelRequirement(mainRoleSelection, skillLevelRadios, skillLevelSection) {
+    const musicianSelected = Array.from(mainRoleSelection).some(
+        radio => radio.checked && radio.value === "Musician"
+    );
+
+    skillLevelRadios.forEach(radio => {
+        if (musicianSelected) {
+            radio.setAttribute('required', 'required');
+            skillLevelSection.style.display = 'block';
+        } else {
+            radio.removeAttribute('required');
+            skillLevelSection.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Fetch and store the profile ID for a given user
+ * @param {string} userId - ID of the user
+ */
 async function fetchAndStoreProfileId(userId) {
     try {
         const response = await fetch(`/api/profiles/user/${userId}`);
@@ -37,27 +95,17 @@ async function fetchAndStoreProfileId(userId) {
     }
 }
 
-// Helper function to fetch user type ID by role name
-async function getUserTypeIdByName(roleName) {
-    try {
-        const response = await fetch(`/api/user-types/name/${roleName}`);
-        if (!response.ok) throw new Error(`Failed to fetch user type for role: ${roleName}`);
-        
-        const userType = await response.json();
-        return userType.id; // Assuming the response contains the ID of the user type
-    } catch (error) {
-        console.error("Error fetching user type ID:", error);
-        return null;
-    }
-}
+// ------------------ Submission Handling ------------------
 
-// Submit user profile set up 
+/**
+ * Submit user profile setup form
+ * @param {Event} event - Submit event object
+ */
 async function handleProfileSetupSubmit(event) {
     event.preventDefault();
 
     const userId = sessionStorage.getItem('userId');
-    const profileId = sessionStorage.getItem('profileId'); // Retrieve profile ID
-
+    const profileId = sessionStorage.getItem('profileId'); 
     if (!userId || !profileId) {
         console.error("Error: userId or profileId not found.");
         alert("User not logged in. Please log in to set up your profile.");
@@ -67,86 +115,20 @@ async function handleProfileSetupSubmit(event) {
 
     const roleName = document.querySelector('input[name="role"]:checked')?.value;
     const proficiencyLevelName = document.querySelector('input[name="skill_level"]:checked')?.value;
-    let proficiencyLevelId = null;
-    let roleId = null;
 
-    // Fetch role ID by role name
-    if (roleName) {
-        roleId = await getUserTypeIdByName(roleName);
-        if (!roleId) {
-            alert("Invalid role selected. Please try again.");
-            return;
-        }
-        console.log(`Selected role: ${roleName}, role ID: ${roleId}`); // Debugging line to check role ID
-    }
+    const userData = { user_type: await getUserTypeIdByName(roleName) };
 
-    // Fetch proficiency level ID by name
-    if (proficiencyLevelName) {
-        try {
-            const response = await fetch(`/api/proficiency-levels/name/${proficiencyLevelName}`);
-            const proficiencyLevelData = await response.json();
-            if (response.ok) {
-                proficiencyLevelId = parseInt(proficiencyLevelData.id, 10);
-            } else {
-                console.error(`Error fetching proficiency level ID: ${proficiencyLevelData.message}`);
-                alert("Error fetching proficiency level. Please try again.");
-                return;
-            }
-        } catch (error) {
-            console.error("Error fetching proficiency level:", error);
-            alert("Error fetching proficiency level. Please try again.");
-            return;
-        }
-    }
-
-    // Format genres and instruments as integer arrays
-    const formattedGenres = Array.from(selectedGenres).map(id => parseInt(id, 10));
-    const formattedInstruments = Array.from(selectedInstruments).map(id => parseInt(id, 10));
-
-    // Prepare data for the `user` table update
-    const userData = {
-        user_type: roleId,
-    };
-
-    // Prepare data for the `profile` table update
     const profileData = {
         gender: document.getElementById('gender').value || null,
-        instruments: roleName === 'Musician' ? formattedInstruments : [],
-        proficiency_level: roleName === 'Musician' ? proficiencyLevelId : 0,
-        genres: formattedGenres,
-
+        instruments: roleName === 'Musician' ? Array.from(selectedInstruments).map(id => parseInt(id, 10)) : [],
+        proficiency_level: roleName === 'Musician' ? await getProficiencyLevelId(proficiencyLevelName) : 0,
+        genres: Array.from(selectedGenres).map(id => parseInt(id, 10)),
         preferred_gender: document.getElementById('preferred_gender').value,
     };
 
     try {
-        // Update the user record (for fields in the users table)
-        const userResponse = await fetch(`/api/users/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        });
-
-        if (!userResponse.ok) {
-            const text = await userResponse.text();
-            throw new Error(`User update failed: ${text}`);
-        }
-
-        // Update the profile record (for fields in the profiles table)
-        const profileResponse = await fetch(`/api/profiles/${profileId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(profileData),
-        });
-
-        if (!profileResponse.ok) {
-            const text = await profileResponse.text();
-            throw new Error(`Profile update failed: ${text}`);
-        }
-
+        await updateUserProfile(userId, userData);
+        await updateProfileData(profileId, profileData);
         alert('Profile setup completed successfully!');
         window.location.href = '../home.html';
     } catch (error) {
@@ -155,8 +137,74 @@ async function handleProfileSetupSubmit(event) {
     }
 }
 
+// ------------------ Update Helper Functions ------------------
 
-// Fetch instruments from the backend and display them
+/**
+ * Get user type ID by role name
+ * @param {string} roleName - Name of the role
+ * @returns {number|null} - ID of the role
+ */
+async function getUserTypeIdByName(roleName) {
+    try {
+        const response = await fetch(`/api/user-types/name/${roleName}`);
+        const userType = await response.json();
+        return userType.id;
+    } catch (error) {
+        console.error("Error fetching user type ID:", error);
+        return null;
+    }
+}
+
+/**
+ * Get proficiency level ID by level name
+ * @param {string} levelName - Name of the proficiency level
+ * @returns {number|null} - ID of the proficiency level
+ */
+async function getProficiencyLevelId(levelName) {
+    try {
+        const response = await fetch(`/api/proficiency-levels/name/${levelName}`);
+        const data = await response.json();
+        return  parseInt(data.id, 10);
+    } catch (error) {
+        console.error("Error fetching proficiency level ID:", error);
+        return null;
+    }
+}
+
+/**
+ * Update the user's main profile data
+ * @param {string} userId - User ID
+ * @param {Object} userData - User data to update
+ */
+async function updateUserProfile(userId, userData) {
+    const response = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+    });
+    if (!response.ok) throw new Error(`Failed to update user: ${await response.text()}`);
+}
+
+/**
+ * Update the user's additional profile data
+ * @param {string} profileId - Profile ID
+ * @param {Object} profileData - Profile data to update
+ */
+async function updateProfileData(profileId, profileData) {
+    const response = await fetch(`/api/profiles/${profileId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profileData),
+    });
+    if (!response.ok) throw new Error(`Failed to update profile: ${await response.text()}`);
+}
+
+
+// ------------------ Instruments and Genres ------------------
+
+/**
+ * Fetch and display available instruments
+ */
 async function fetchInstruments() {
     try {
         const response = await fetch('/api/instruments');
@@ -167,7 +215,23 @@ async function fetchInstruments() {
     }
 }
 
-// Display instruments function
+/**
+ * Fetch and display available genres
+ */
+async function fetchGenres() {
+    try {
+        const response = await fetch('/api/genres');
+        const genres = await response.json();
+        displayGenres(genres);
+    } catch (error) {
+        console.error('Error fetching genres:', error);
+    }
+}
+
+/**
+ * Display instruments list and manage selection
+ * @param {Array} instruments - List of instrument objects
+ */
 function displayInstruments(instruments) {
     const instrumentOptionsContainer = document.getElementById('instruments-options');
     instrumentOptionsContainer.innerHTML = ''; // Clear existing options
@@ -184,10 +248,35 @@ function displayInstruments(instruments) {
     });
 }
 
+/**
+ * Display genres list and manage selection
+ * @param {Array} genres - List of genre objects
+ */
+function displayGenres(genres) {
+    const genreOptionsContainer = document.getElementById('genre-options');
+    genreOptionsContainer.innerHTML = ''; // Clear existing options
+
+    genres.forEach(genre => {
+        const option = document.createElement('div');
+        option.classList.add('badge-option');
+        option.textContent = genre.name;
+        option.dataset.genreId = genre.id;
+
+        // Toggle selection on click, respecting the limit
+        option.addEventListener('click', () => toggleGenreSelection(option, genre));
+        genreOptionsContainer.appendChild(option);
+    });
+}
+
 // Handle instrument selection
 const selectedInstrumentsContainer = document.getElementById('selected-instruments');
 let selectedInstruments = new Set();
 
+/**
+ * Toggle instrument selection and update display
+ * @param {HTMLElement} option - Selected option element
+ * @param {Object} instrument - Selected instrument object
+ */
 function toggleInstrumentSelection(option, instrument) {
     if (selectedInstruments.has(instrument.id)) {
         selectedInstruments.delete(instrument.id);
@@ -200,7 +289,36 @@ function toggleInstrumentSelection(option, instrument) {
     }
 }
 
-// Add selected instrument tag
+// Handle genre selection with limit
+const selectedGenresContainer = document.getElementById('selected-genres');
+let selectedGenres = new Set();
+
+/**
+ * Toggle genre selection with a limit of 5 genres
+ * @param {HTMLElement} option - Selected option element
+ * @param {Object} genre - Selected genre object
+ */
+function toggleGenreSelection(option, genre) {
+    if (selectedGenres.has(genre.id)) {
+        // Deselect genre
+        selectedGenres.delete(genre.id);
+        option.classList.remove('selected');
+        removeSelectedGenreTag(genre.id);
+    } else if (selectedGenres.size < 5) {
+        // Select genre if under the limit
+        selectedGenres.add(genre.id);
+        option.classList.add('selected');
+        addSelectedGenreTag(genre);
+    } else {
+        alert('You can select up to 5 genres only.');
+    }
+}
+
+
+/**
+ * Add selected instrument tag to the display
+ * @param {Object} instrument - Instrument object with id and name
+ */
 function addSelectedInstrumentTag(instrument) {
     const tag = document.createElement('div');
     tag.classList.add('selected-badge');
@@ -218,76 +336,11 @@ function addSelectedInstrumentTag(instrument) {
     selectedInstrumentsContainer.appendChild(tag);
 }
 
-// Remove instrument tag when deselected
-function removeSelectedInstrumentTag(instrumentId) {
-    const tag = selectedInstrumentsContainer.querySelector(`[data-instrument-id="${instrumentId}"]`);
-    if (tag) tag.remove();
-}
 
-// Filter instruments based on search input
-function filterInstruments() {
-    const searchValue = document.getElementById('badge-search').value.toLowerCase();
-    const instrumentOptions = document.querySelectorAll('.badge-option');
-
-    instrumentOptions.forEach(option => {
-        const instrumentName = option.textContent.toLowerCase();
-        if (instrumentName.includes(searchValue)) {
-            option.style.display = 'inline-block';
-        } else {
-            option.style.display = 'none';
-        }
-    });
-}
-
-// Fetch genres from the backend and display them
-async function fetchGenres() {
-    try {
-        const response = await fetch('/api/genres');
-        const genres = await response.json();
-        displayGenres(genres);
-    } catch (error) {
-        console.error('Error fetching genres:', error);
-    }
-}
-
-// Display genres function
-function displayGenres(genres) {
-    const genreOptionsContainer = document.getElementById('genre-options');
-    genreOptionsContainer.innerHTML = ''; // Clear existing options
-
-    genres.forEach(genre => {
-        const option = document.createElement('div');
-        option.classList.add('badge-option');
-        option.textContent = genre.name;
-        option.dataset.genreId = genre.id;
-
-        // Toggle selection on click, respecting the limit
-        option.addEventListener('click', () => toggleGenreSelection(option, genre));
-        genreOptionsContainer.appendChild(option);
-    });
-}
-
-// Handle genre selection with limit
-const selectedGenresContainer = document.getElementById('selected-genres');
-let selectedGenres = new Set();
-
-function toggleGenreSelection(option, genre) {
-    if (selectedGenres.has(genre.id)) {
-        // Deselect genre
-        selectedGenres.delete(genre.id);
-        option.classList.remove('selected');
-        removeSelectedGenreTag(genre.id);
-    } else if (selectedGenres.size < 5) {
-        // Select genre if under the limit
-        selectedGenres.add(genre.id);
-        option.classList.add('selected');
-        addSelectedGenreTag(genre);
-    } else {
-        alert('You can select up to 5 genres only.');
-    }
-}
-
-// Add selected genre tag
+/**
+ * Add selected genre tag to the display
+ * @param {Object} genre - Genre object with id and name
+ */
 function addSelectedGenreTag(genre) {
     const tag = document.createElement('div');
     tag.classList.add('selected-badge');
@@ -305,13 +358,45 @@ function addSelectedGenreTag(genre) {
     selectedGenresContainer.appendChild(tag);
 }
 
-// Remove genre tag when deselected
+
+/**
+ * Remove selected instrument tag from the display
+ * @param {number} instrumentId - ID of the instrument to remove
+ */
+function removeSelectedInstrumentTag(instrumentId) {
+    const tag = selectedInstrumentsContainer.querySelector(`[data-instrument-id="${instrumentId}"]`);
+    if (tag) tag.remove();
+}
+
+/**
+ * Remove selected genre tag from the display
+ * @param {string} genreId - ID of the genre to remove
+ */
 function removeSelectedGenreTag(genreId) {
     const tag = selectedGenresContainer.querySelector(`[data-genre-id="${genreId}"]`);
     if (tag) tag.remove();
 }
 
-// Filter genres based on search input
+/**
+ * Filter instrument list based on search input
+ */
+function filterInstruments() {
+    const searchValue = document.getElementById('badge-search').value.toLowerCase();
+    const instrumentOptions = document.querySelectorAll('.badge-option');
+
+    instrumentOptions.forEach(option => {
+        const instrumentName = option.textContent.toLowerCase();
+        if (instrumentName.includes(searchValue)) {
+            option.style.display = 'inline-block';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Filter genre list based on search input
+ */
 function filterGenres() {
     const searchValue = document.getElementById('badge-search').value.toLowerCase();
     const genreOptions = document.querySelectorAll('.badge-option');
@@ -322,7 +407,10 @@ function filterGenres() {
     });
 }
 
-// Display information about terms
+
+// ------------------ Utility  --------------------
+
+// Display information about terms on hover
 document.querySelectorAll('.info-icon').forEach(icon => {
     icon.addEventListener('mouseenter', (event) => {
         const infoText = event.currentTarget.getAttribute('data-info');
@@ -343,7 +431,10 @@ document.querySelectorAll('.info-icon').forEach(icon => {
     });
 });
 
-// Preview Image Functionality
+/**
+ * Preview selected image file in the upload container
+ * @param {Event} event - File input change event
+ */
 function previewImage(event) {
     const file = event.target.files[0];
     if (file) {
@@ -358,30 +449,3 @@ function previewImage(event) {
     }
 }
 
-// Skill Level Requirement Handling for Musicians
-document.addEventListener("DOMContentLoaded", () => {
-    const mainRoleSelection = document.querySelectorAll('input[name="role"]');
-    const skillLevelRadios = document.querySelectorAll('input[name="skill_level"]');
-    const skillLevelSection = document.getElementById('step-4');
-
-    function updateSkillLevelRequirement() {
-        const musicianSelected = Array.from(mainRoleSelection).some(
-            radio => radio.checked && radio.value === "Musician"
-        );
-
-        skillLevelRadios.forEach(radio => {
-            if (musicianSelected) {
-                radio.setAttribute('required', 'required');
-            } else {
-                radio.removeAttribute('required');
-                skillLevelSection.style.display = 'none';
-            }
-        });
-    }
-
-    mainRoleSelection.forEach(radio => {
-        radio.addEventListener("change", updateSkillLevelRequirement);
-    });
-
-    updateSkillLevelRequirement();
-});
