@@ -27,44 +27,48 @@
 
             <!-- Middle Section: Swiping User Profile Card -->
             <!-- TEST DATA -->
+            <div id="action-message" class="action-message"></div>
+            
             <div class="user-card" id="user-card" onclick="showUserDetails()">
                 <div class="user-image" style="background-image: url('../images/test-user-img.jpeg');"></div> 
                 <div class="user-info">
-                    <h2 id="user-name">Johnathan Wright</h2>
-                    <p id="user-role">Musician</p>
-                    <div class="user-genres">
-                        <span class="card-badge">Rock</span>
-                        <span class="card-badge">Hip-Hop</span>
-                        <span class="card-badge">Classical</span>
+                    <h2 id="user-name"></h2>
+                    <p id="user-role"></p>
+                    <div class="badge-options" id="user-genres">
                     </div>
                 </div>
             </div>
 
-            <div class="user-details-overlay" id="user-details-overlay">
-                <button class="back-button" onclick="hideUserDetails()">←</button>
-                <div class="detailed-content">
-                    <div class="detailed-image" style="background-image: url('../images/test-user-img.jpeg');"></div>
-                    <h2>Johnathan Wright</h2>
-                    <p class="role">Musician</p>
-                    <div class="section">
-                        <h3>About</h3>
-                        <p>Adventurous soul with a passion for exploring new places and trying exotic cuisines.</p>
+            <div class="user-details-overlay container" id="user-details-overlay">
+                <div class="content-main">   
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="hideUserDetails()">Back</button>
                     </div>
-                    <div class="section">
-                        <h3>Instruments</h3>
-                        <div class="badges">
-                            <span class="badge">Drums</span>
-                            <span class="badge">Gaming</span>
-                            <span class="badge">Gaming</span>
-                            <span class="badge">Gaming</span>
+                    <div class="detailed-content">
+                        <div class="detailed-image" style="background-image: url('../images/test-user-img.jpeg');"></div>
+                        <div>
+                            <h2 id="details-user-name"></h2>
+                            <p class="role" id="details-user-role"></p>
                         </div>
-                    </div>
-                    <div class="section">
-                        <h3>Music Taste</h3>
-                        <div class="badges">
-                            <span class="badge">Rock</span>
-                            <span class="badge">Hip-Hop</span>
-                            <span class="badge">Folk</span>
+                        <div class="detailed-content-section">
+                            <h3>About</h3>
+                            <p id="user-bio"></p>
+                        </div>
+                        <div class="detailed-content-section">
+                            <h3>Instruments</h3>
+                            <div class="badge-options" id="user-instruments">
+                            </div>
+                        </div>
+                        <div class="detailed-content-section">
+                            <h3>Proficiency Level</h3>
+                            <div class="badge-options">
+                                <span class="badge-option home" id="user-proficiency"></span>
+                            </div>
+                        </div>
+                        <div class="detailed-content-section">
+                            <h3>Music Taste</h3>
+                            <div class="badge-options" id="details-user-genres">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,13 +76,14 @@
 
             <!-- Swipe Buttons -->
             <div class="swipe-buttons-container">
-                <button class="btn dislike" onclick="swipeDislike()">
+                <button class="btn dislike">
                     <span class="material-symbols-rounded">close</span>
                 </button>
-                <button class="btn like" onclick="swipeLike()">
+                <button class="btn like">
                     <span class="material-symbols-rounded">favorite</span>
                 </button>
             </div>
+            
 
             <!-- Bottom Navigation -->
             <div class="bottom-nav">
@@ -88,9 +93,6 @@
                     </a>
                     <a href="../html/matches.html">
                         <span class="nav-icon material-symbols-rounded fill">music_note</span>
-                    </a>
-                    <a href="">
-                        <span class="nav-icon material-symbols-rounded fill">chat</span>
                     </a>
                     <a href="../html/profile/profile.html">
                         <span class="nav-icon material-symbols-rounded fill">person</span>
