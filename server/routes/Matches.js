@@ -1,7 +1,10 @@
 const express = require('express');
-const { getMatchById, createMatch, updateMatch, deleteMatch } = require('../controllers/matchController');
+const { getMatchById, createMatch, updateMatch, deleteMatch, getAllMatches } = require('../controllers/matchController');
 
 const router = express.Router();
+
+// Route to get all matches
+router.get('/', getAllMatches);
 
 //Route to get match by id
 router.get('/:id',  getMatchById);

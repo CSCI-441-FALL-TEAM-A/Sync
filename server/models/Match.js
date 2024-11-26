@@ -33,6 +33,22 @@ const Match = {
         }
     },
 
+    /**
+     * Get all matches.
+     * @returns {object|null} The matches record if found, else null.
+     * @throws Will throw an error if an invalid match is provided.
+     */
+    async getAll(){
+        try{
+            const query = 'SELECT * FROM matches WHERE matches.deleted_at IS NULL';
+            const result = await queryDB(query);
+            return result.length > 0 ? result : null;
+        }catch (error){
+            console.error('Error fetching matches:', error);
+            throw error;
+        }
+    },
+
 
     /**
      * Create a new match.

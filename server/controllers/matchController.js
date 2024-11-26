@@ -98,8 +98,25 @@ const deleteMatch = async(req, res) => {
     }
 };
 
+const getAllMatches = async (req, res) => {
+    try {
+        const matches = await Match.getAll();
+
+        // If no matches found, return a 404
+        if (!matches || matches.length === 0) {
+            return res.status(404).json({ message: 'No matches found' });
+        }
+
+        return res.status(200).json(matches);
+    }catch(error){
+        console.log('Error fetch matches:', error);
+        return res.status(500).json({ message: 'Internal server error'});
+    }
+};
+
 module.exports = {
     getMatchById,
+    getAllMatches,
     createMatch,
     updateMatch,
     deleteMatch,
