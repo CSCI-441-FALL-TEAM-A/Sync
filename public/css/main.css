@@ -504,19 +504,6 @@ select {
     cursor: pointer;
 }
 
-.action-message{
-    display: none; 
-    position: absolute; 
-    top: 10px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    padding: 10px; 
-    background: #333; 
-    color: #fff; 
-    border-radius: 5px;
-}
-
-
 .user-card {
     flex-grow: 1; 
     display: flex;
