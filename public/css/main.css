@@ -105,7 +105,6 @@ input, select{
     height: 100%;
     margin: auto;
     margin-top: 0;
-    justify-content: space-between;
 }
 
 .logo.main img{
@@ -590,9 +589,6 @@ select {
     border: 1px solid var(--like-button-hover-color);
 }
 
-
-
-
 /* Overlay for user details */
 .user-details-overlay {
     position: fixed;
@@ -656,6 +652,78 @@ select {
     font-size: 16px;
     cursor: auto;
 }
+
+
+/* || MATCHES */
+.matches-container{
+    margin-top: 15px;
+}
+
+.matches-container h2{
+    font-size: 24px;
+    font-family: "Literata", serif;
+    color: var(--auth-heading-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.matches-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+    align-items: center; 
+}
+
+.match-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.match-pic img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.match-info {
+    width: 100%;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.match-info:hover {
+    color: var(--badges-selected-color);
+}
+
+.btn-chat-container{
+   margin-left: auto;
+}
+
+.btn.chat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--main-button-color);
+    color: white; 
+    border: none;
+    cursor: pointer;
+}
+
+.btn.chat:hover {
+    color: var(--dislike-button-hover-color);
+    background: transparent;
+    border: 1px solid var(--dislike-button-hover-color);
+}
+
 
 
 /* || PROFILE */

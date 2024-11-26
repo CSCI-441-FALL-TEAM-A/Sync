@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userId = sessionStorage.getItem('userId');
     if (!userId) {
         console.error('User ID not found. Redirecting to login...');
-        window.location.href = '/login.html'; // Redirect if necessary
+        window.location.href = '../index.html'; // Redirect if necessary
     }
 
     try {
@@ -56,6 +56,7 @@ async function loadGenresAndInstruments() {
  */
 async function loadProfiles() {
     try {
+        const userId = sessionStorage.getItem('userId');
         const allProfilesResponse = await fetch('/api/profiles');
         if (!allProfilesResponse.ok) throw new Error('Failed to fetch profiles');
 
@@ -77,9 +78,15 @@ async function loadProfiles() {
 
             return {
                 ...detailedProfile,
+                email: user.email,
                 roleName
             };
         }));
+
+        // Filter out the current user's profile
+        profiles = profiles.filter(profile => profile.user_id !== userId);
+
+        console.log(profiles);
     } catch (error) {
         console.error("Error loading profiles:", error);
     }
