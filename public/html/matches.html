@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync - Matches</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+    <script src="../js/matches.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-main"> 
+            <!-- Top Section: Logo and Filter -->
+            <div class="btn-prev-container top-bar">
+                <div class="logo main">
+                    <img src="../images/sync-logo-blue-full.png" alt="Sync Logo">
+                </div>
+                <span class="filter-icon material-symbols-rounded">tune</span>
+            </div>
+            
+            <!-- Matched Users Section -->
+            
+            <div id="matches-container" class="matches-container">
+                <h2>Your Matches</h2>
+                <div  class="matches-grid">
+                    <!-- Cards will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <div class="user-details-overlay container" id="user-details-overlay">
+                <div class="content-main">   
+                    <div class="btn-prev-container">
+                        <button type="button" class="btn prev" onclick="hideUserDetails()">Back</button>
+                    </div>
+                    <div class="detailed-content">
+                        <div class="detailed-image" style="background-image: url('../images/default_avatar.jpg');"></div>
+                        <div>
+                            <h2 id="details-user-name"></h2>
+                            <p class="role" id="details-user-role"></p>
+                        </div>
+                        <div class="detailed-content-section">
+                            <h3>About</h3>
+                            <p id="user-bio"></p>
+                        </div>
+                        <div class="detailed-content-section instruments-section">
+                            <h3>Instruments</h3>
+                            <div class="badge-options" id="user-instruments">
+                            </div>
+                        </div>
+                        <div class="detailed-content-section proficiency-level-section">
+                            <h3>Proficiency Level</h3>
+                            <div class="badge-options">
+                                <span class="badge-option home" id="user-proficiency"></span>
+                            </div>
+                        </div>
+                        <div class="detailed-content-section">
+                            <h3>Music Taste</h3>
+                            <div class="badge-options" id="details-user-genres">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="bottom-nav-width">
+                    <a href="../html/home.html">
+                        <span class="nav-icon material-symbols-rounded fill">home</span>
+                    </a>
+                    <a href="../html/matches.html">
+                        <span class="nav-icon material-symbols-rounded fill active">music_note</span>
+                    </a>
+                    <a href="../html/profile/profile.html">
+                        <span class="nav-icon material-symbols-rounded fill">person</span>
+                    </a> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
