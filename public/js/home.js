@@ -1,12 +1,17 @@
 // ------------------ Page Initialization ------------------
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
+        console.error('User ID not found. Redirecting to login...');
+        window.location.href = '/login.html'; // Redirect if necessary
+    }
+
     try {
-        await loadGenresAndInstruments();
-        await loadProfiles();
+        await Promise.all([loadGenresAndInstruments(), loadProfiles(), loadUserMatches(userId)]);
         displayProfile(currentProfileIndex);
     } catch (error) {
-        console.error("Error loading profiles:", error);
+        console.error("Error during initialization:", error);
     }
 
     // Add event listeners after DOMContentLoaded
@@ -21,6 +26,7 @@ let profiles = [];
 let currentProfileIndex = 0;
 let allGenres = [];
 let allInstruments = [];
+let userMatches = [];
 
 // ------------------ Load Data Functions ------------------
 
@@ -74,8 +80,6 @@ async function loadProfiles() {
                 roleName
             };
         }));
-
-        console.log("Detailed Profiles loaded:", profiles);
     } catch (error) {
         console.error("Error loading profiles:", error);
     }
@@ -96,6 +100,28 @@ async function fetchRoleNameById(roleId) {
         return null;
     }
 }
+
+
+/**
+ * Load all matches and filter those relevant to the current user.
+ * @param {number} userId - ID of the current user.
+ */
+async function loadUserMatches(userId) {
+    try {
+        const response = await fetch('/api/matches');
+        if (!response.ok) throw new Error('Failed to fetch matches');
+
+        const allMatches = await response.json(); 
+        
+        // Filter matches where the user is involved
+        userMatches = allMatches.filter(
+            match => match.user_id_one === userId || match.user_id_two === userId
+        );
+    } catch (error) {
+        console.error("Error loading matches:", error);
+    }
+}
+
 
 
 // ------------------ Display Profile Functions ------------------
@@ -136,77 +162,205 @@ function displayProfile(index) {
         }
     });
 
-    // Display instruments
-    const instrumentsContainer = document.getElementById("user-instruments");
-    instrumentsContainer.innerHTML = ""; // Clear previous instruments
-    profile.instruments.forEach(instrument => {
-        const instrumentBadge = document.createElement("span");
-        instrumentBadge.classList.add("badge-option", "home");
-        instrumentBadge.textContent = instrument.name;
-        instrumentsContainer.appendChild(instrumentBadge);
-    });
-
-    // Display proficiency level if available
-    document.getElementById("user-proficiency").textContent = profile.proficiency_level || 'None';
+     // Select instruments and proficiency level sections
+     const instrumentsSection = document.querySelector(".instruments-section");
+     const proficiencyLevelSection = document.querySelector(".proficiency-level-section");
+ 
+     if (profile.roleName === "Musician") {
+         instrumentsSection.style.display = "block";
+         proficiencyLevelSection.style.display = "block";
+ 
+         // Display instruments
+         const instrumentsContainer = document.getElementById("user-instruments");
+         instrumentsContainer.innerHTML = ""; // Clear previous instruments
+         profile.instruments.forEach(instrument => {
+             const instrumentBadge = document.createElement("span");
+             instrumentBadge.classList.add("badge-option", "home");
+             instrumentBadge.textContent = instrument.name;
+             instrumentsContainer.appendChild(instrumentBadge);
+         });
+ 
+         // Display proficiency level
+         document.getElementById("user-proficiency").textContent = profile.proficiency_level || 'None';
+     } else {
+         // Hide instruments and proficiency level sections if not a musician
+         instrumentsSection.style.display = "none";
+         proficiencyLevelSection.style.display = "none";
+     }
 }
 
 
-// ------------------ Swipe Functionality ------------------
+// ------------------ Like/Dislike Match Functions ------------------
 
 /**
- * Handle the "like" action and then navigate to the next profile.
+ * Handle the "like" action for the current profile.
  */
-function swipeLike() {
-    if (!profiles.length) return;  // Ensure profiles array exists
+async function swipeLike() {
+    if (!profiles.length) return; // Ensure profiles array exists
 
-    disableButtons();  // Temporarily disable buttons
-    displayActionMessage("Liked"); // Display the like message for the current profile
+    const currentUser = sessionStorage.getItem('userId');
+    const targetUser = profiles[currentProfileIndex].user_id;
 
-    // Increment index with bounds check
+    try {
+        const match = await getMatch(currentUser, targetUser);
+
+        if (match) {
+            const statusName = await getMatchStatusById(match.status); // Get status name by ID
+
+            if (statusName === "Unmatched") {
+                await updateMatchStatus(match.id, 2);
+            } else if (statusName === "Denied") {
+                console.log("Action ignored due to denied status");
+            }
+        } else {
+            const newMatch = await createMatch(currentUser, targetUser, "Unmatched");
+            userMatches.push(newMatch); // Add new match to the local array
+        }
+    } catch (error) {
+        console.error("Error handling like action:", error);
+    }
+
+    moveToNextProfile();
+}
+
+/**
+ * Handle the "dislike" action for the current profile.
+ */
+async function swipeDislike() {
+    if (!profiles.length) return; // Ensure profiles array exists
+
+    const currentUser = sessionStorage.getItem('userId');
+    const targetUser = profiles[currentProfileIndex].user_id;
+
+    try {
+        const match = await getMatch(currentUser, targetUser);
+
+        if (match) {
+            const statusName = await getMatchStatusById(match.status); // Get status name by ID
+
+            if (statusName === "Unmatched") {
+                await updateMatchStatus(match.id, 3);
+            } else if (statusName === "Denied") {
+                console.log("Action ignored due to denied status");
+            }
+        } else {
+            const newMatch = await createMatch(currentUser, targetUser, "Denied");
+            userMatches.push(newMatch); // Add new match to the local array
+        }
+    } catch (error) {
+        console.error("Error handling dislike action:", error);
+    }
+
+    moveToNextProfile();
+}
+
+/**
+ * Move to the next profile in the list.
+ */
+function moveToNextProfile() {
+    disableButtons();
     currentProfileIndex = (currentProfileIndex + 1) % profiles.length;
-
     setTimeout(() => {
-        displayProfile(currentProfileIndex);  // Display the next profile after delay
-        enableButtons();  // Re-enable buttons
+        displayProfile(currentProfileIndex);
+        enableButtons();
     }, 500);
 }
 
+// ------------------ API Helper Functions ------------------
+
 /**
- * Handle the "dislike" action and then navigate to the next profile.
+ * Fetch the current match between two users.
+ * @param {number} userIdOne - ID of the first user (current user).
+ * @param {number} userIdTwo - ID of the second user (target user).
+ * @returns {object|null} Match object if exists, null otherwise.
  */
-function swipeDislike() {
-    if (!profiles.length) return;  // Ensure profiles array exists
-
-    disableButtons();  // Temporarily disable buttons
-    displayActionMessage("Disliked"); // Display the dislike message for the current profile
-
-    // Increment index with bounds check
-    currentProfileIndex = (currentProfileIndex + 1) % profiles.length;
-
-    setTimeout(() => {
-        displayProfile(currentProfileIndex);  // Display the next profile after delay
-        enableButtons();  // Re-enable buttons
-    }, 500);
+function getMatch(userIdOne, userIdTwo) {
+    return userMatches.find(
+        match =>
+            (match.user_id_one === userIdOne && match.user_id_two === userIdTwo) ||
+            (match.user_id_one === userIdTwo && match.user_id_two === userIdOne)
+    ) || null;
 }
 
 /**
- * Display a message for the current profile.
- * @param {string} action - The action performed (like or dislike).
+ * Update the status of an existing match.
+ * @param {number} matchId - ID of the match to update.
+ * @param {string} status - New status for the match.
  */
-function displayActionMessage(action) {
-    const profile = profiles[currentProfileIndex];
-    const message = `${action} profile: ${profile.first_name} ${profile.last_name}`;
+async function updateMatchStatus(matchId, status) {
+    try {
+        const response = await fetch(`/api/matches/${matchId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: status })
+        });
 
-    document.getElementById('action-message').style.display = 'flex';
-    const actionMessageElement = document.getElementById("action-message");
-    actionMessageElement.textContent = message;
-    
-    // Clear message after a delay matching profile transition
-    setTimeout(() => {
-        actionMessageElement.textContent = ""; 
-        document.getElementById('action-message').style.display = 'none';
-    }, 500); 
+        if (!response.ok) {
+            throw new Error("Failed to update match status");
+        }
+
+        const updatedMatch = await response.json(); // Get the updated match from the response
+        return updatedMatch;
+    } catch (error) {
+        console.error("Error updating match status:", error);
+        throw error;
+    }
 }
+
+/**
+ * Create a new match between two users.
+ * @param {number} userIdOne - ID of the first user (current user).
+ * @param {number} userIdTwo - ID of the second user (target user).
+ * @param {string} statusName - Name of the status (e.g., "Unmatched").
+ */
+async function createMatch(userIdOne, userIdTwo, statusName) {
+    try {
+        // Fetch the match status ID by name
+        const statusResponse = await fetch(`/api/match-statuses/name/${statusName}`);
+        if (!statusResponse.ok) {
+            throw new Error(`Failed to fetch match status for: ${statusName}`);
+        }
+
+        const { id: statusId } = await statusResponse.json(); // Extract the numeric ID
+
+        // Proceed to create the match with the numeric status ID
+        const response = await fetch("/api/matches/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id_one: userIdOne,
+                user_id_two: userIdTwo,
+                status: statusId, // Use numeric status ID
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create match");
+        }
+
+        const newMatch = await response.json();
+        return newMatch;
+    } catch (error) {
+        console.error("Error creating match:", error);
+        throw error;
+    }
+}
+
+async function getMatchStatusById(statusId) {
+    try {
+        const response = await fetch(`/api/match-statuses/id/${statusId}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch match status for ID: ${statusId}`);
+        }
+
+        const matchStatus = await response.json();
+        return matchStatus.name; // Return the name of the status (e.g., "Unmatched")
+    } catch (error) {
+        console.error("Error fetching match status by ID:", error);
+        throw error;
+    }
+}
+
 
 /**
  * Disable the like/dislike buttons to prevent rapid consecutive clicks.
